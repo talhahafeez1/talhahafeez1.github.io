@@ -11,7 +11,7 @@ function loginUser(){
             
             // Check if user exists
             if (databaseUserInfo == null){
-                alert("User does not exist!");
+                window.alert("User does not exist!");
                 return;
             } 
             
