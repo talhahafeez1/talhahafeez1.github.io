@@ -1,6 +1,6 @@
 const color = "#167e56";
 
-function login() {
+function login_user() {
     username = document.getElementById("inputUser").value;
     password = document.getElementById("inputPassword").value;
     if (username != ""){
