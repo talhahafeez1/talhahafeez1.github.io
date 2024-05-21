@@ -1,6 +1,6 @@
 const color = "#167e56";
 
-function login_user() {
+function login_user(){
     username = document.getElementById("inputUser").value;
     password = document.getElementById("inputPassword").value;
     if (username != ""){
@@ -28,10 +28,10 @@ function login_user() {
             window.location.href = "../calender.html";
         });
     }
-  }
+}
   
-  function createAcc() {
+function createAcc() {
     window.location.href = "../register.html";
-  }
+}
 
 export { color };
