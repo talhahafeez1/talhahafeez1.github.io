@@ -1,0 +1,47 @@
+[
+    {
+        "1113": [
+            {
+                "start": "2:30 PM",
+                "end": "3:30 PM",
+                "moderator": "Lily Parekh"
+            },
+            
+            {
+                "start": "3:30 PM",
+                "end": "4:30 PM",
+                "moderator": "Ellen Edmonds-Whyte"
+            },
+            
+            {
+                "start": "4:30 PM",
+                "end": "5:30 PM",
+                "moderator": "Mia Desmot"
+            }
+        ]
+    }, 
+    
+    {
+        "1114": [
+            {
+                "start": "2:30 PM",
+                "end": "3:30 PM",
+                "moderator": "Natalie Wueppelmann"
+            },
+            
+            {
+                "start": "3:30 PM",
+                "end": "4:30 PM",
+                "moderator": "Ryan Yi"
+            },
+            
+            {
+                "start": "4:30 PM",
+                "end": "5:30 PM",
+                "moderator": "Ryan Yi"
+            }
+        
+        ]
+    }
+]
+
