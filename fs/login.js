@@ -1,4 +1,4 @@
-localStorage.setItem("color", "#167e56";
+localStorage.setItem("color", "#167e56");
 
 function loginUser(){
     username = document.getElementById("inputUser").value;
