@@ -270,12 +270,12 @@ function loginUser(){
               alert("Password is not correct! Please try again!");
               return;
           }
-
+          window.location.href = "https://talhahafeez1.github.io/calendar.html";
           // Check if user is an admin
           if (databaseUserInfo['admin']){
               document.getElementsByClassName("month")[0].style.background_color = "red";
           }
-          window.location.href = "https://talhahafeez1.github.io/calendar.html";
+          
       });
   }
 }
