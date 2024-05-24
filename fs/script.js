@@ -215,22 +215,27 @@ if (formEL != null){
   })
 }
 
+if (document.getElementById("confirmButton") != null){
+  document.getElementById("confirmButton").addEventListener('click', () => {
+    document.getElementById("popUp").style.display = "none";
+  })
+}
 
-document.getElementById("confirmButton").addEventListener('click', () => {
-  document.getElementById("popUp").style.display = "none";
-})
 
 // event listeners to change months
-document.querySelector('.prev').addEventListener('click', () => {
-  date.setMonth(date.getMonth() - 1)
-  renderCalendar()
-})
+if (document.querySelector('.prev') != null){
+  document.querySelector('.prev').addEventListener('click', () => {
+    date.setMonth(date.getMonth() - 1)
+    renderCalendar()
+  })
+}
 
-document.querySelector('.next').addEventListener('click', () => {
-  date.setMonth(date.getMonth() + 1)
-  renderCalendar()
-})
-
+if (document.querySelector('.next') != null){
+  document.querySelector('.next').addEventListener('click', () => {
+    date.setMonth(date.getMonth() + 1)
+    renderCalendar()
+  })
+}
 
 // helper function to find object length 
 function objLength(obj) {
