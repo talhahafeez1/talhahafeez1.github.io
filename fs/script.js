@@ -250,8 +250,6 @@ function objLength(obj) {
   return count;
 }
 
-
-
 function loginUser(){
   username = document.getElementById("inputUser").value;
   password = document.getElementById("inputPassword").value;
@@ -275,7 +273,7 @@ function loginUser(){
 
           // Check if user is an admin
           if (databaseUserInfo['admin']){
-              localStorage.setItem("color", "red");
+              document.getElementsByClassName("month")[0].style.background_color = "red";
           }
           window.location.href = "https://talhahafeez1.github.io/calendar.html";
       });
