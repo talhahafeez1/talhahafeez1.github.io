@@ -1,3 +1,5 @@
+import 'https://tomashubelbauer.github.io/github-pages-local-storage/index.js';
+
 const date = new Date();
 console.log(localStorage.getItem("color"));
 document.getElementsByClassName("month")[0].style.backgroundColor = localStorage.getItem("color");

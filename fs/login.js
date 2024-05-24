@@ -1,3 +1,4 @@
+import 'https://tomashubelbauer.github.io/github-pages-local-storage/index.js';
 localStorage.setItem("color", "#167e56");
 
 function loginUser(){
