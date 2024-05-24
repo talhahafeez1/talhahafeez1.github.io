@@ -185,33 +185,36 @@ function renderDetails(matchDay) { // show the details of the match
 }
 
 // event listener to write form submissions to db
-formEL.addEventListener('submit', event => {
-  event.preventDefault();
-  const formData = new FormData(formEL);
-  const data = Object.fromEntries(formData); // generate the data from the form
-  let parseData = "";
+if (formEL != null){
+  formEL.addEventListener('submit', event => {
+    event.preventDefault();
+    const formData = new FormData(formEL);
+    const data = Object.fromEntries(formData); // generate the data from the form
+    let parseData = "";
 
-  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
-    .then(res => res.json())
-    .then(async readData => {
-      parseData = readData["write"][searchKey + matchClicked]; // point to the day clicked
-      if (objLength(parseData) < 2) {
-        //generates its own unique key in the form of month, day, match number (1 to n)
-        await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/write/' + searchKey + matchClicked + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data) // actual content being written to db from form submission
-        })
-      } else {
-        document.getElementById("popUp").style.display = "block";
-      }
-    });
+    fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
+      .then(res => res.json())
+      .then(async readData => {
+        parseData = readData["write"][searchKey + matchClicked]; // point to the day clicked
+        if (objLength(parseData) < 2) {
+          //generates its own unique key in the form of month, day, match number (1 to n)
+          await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/write/' + searchKey + matchClicked + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data) // actual content being written to db from form submission
+          })
+        } else {
+          document.getElementById("popUp").style.display = "block";
+        }
+      });
 
 
-  clearForm(); // close and clear the form after submission successful 
-})
+    clearForm(); // close and clear the form after submission successful 
+  })
+}
+
 
 document.getElementById("confirmButton").addEventListener('click', () => {
   document.getElementById("popUp").style.display = "none";
