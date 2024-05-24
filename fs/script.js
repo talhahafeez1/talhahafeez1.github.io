@@ -1,4 +1,9 @@
 const date = new Date();
+const admin = "False";
+
+if (admin == "True"){
+
+}
 
 const novMatchDays = new Set([ // NOVEMBER hardcoded set of exhibition match days
   
@@ -270,12 +275,12 @@ function loginUser(){
               alert("Password is not correct! Please try again!");
               return;
           }
-          window.location.href = "https://talhahafeez1.github.io/calendar.html";
           // Check if user is an admin
           if (databaseUserInfo['admin']){
-              document.getElementsByClassName("month")[0].style.background_color = "red";
+            admin = "True";
           }
-          
+  
+          window.location.href = "https://talhahafeez1.github.io/calendar.html";
       });
   }
 }
