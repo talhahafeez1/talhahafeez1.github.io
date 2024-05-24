@@ -1,8 +1,8 @@
 const date = new Date();
-const admin = "False";
+let admin = "False";
 
 if (admin == "True"){
-
+  document.getElementsByClassName("month")[0].style.background_color = "red";
 }
 
 const novMatchDays = new Set([ // NOVEMBER hardcoded set of exhibition match days
@@ -279,7 +279,7 @@ function loginUser(){
           if (databaseUserInfo['admin']){
             admin = "True";
           }
-  
+
           window.location.href = "https://talhahafeez1.github.io/calendar.html";
       });
   }
