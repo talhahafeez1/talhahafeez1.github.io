@@ -25,13 +25,13 @@ function loginUser(){
             if (databaseUserInfo['admin']){
                 color = "red";
             }
-            window.location.href = "../calender.html";
+            window.location.href = "https://talhahafeez1.github.io/calendar.html";
         });
     }
 }
   
 function createAcc() {
-    window.location.href = "../register.html";
+    window.location.href = "https://talhahafeez1.github.io/register.html";
 }
 
 // export { color };
