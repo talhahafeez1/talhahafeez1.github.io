@@ -1,5 +1,5 @@
 const date = new Date();
-console.log(window.location);
+console.log("calendar.html" in window.location);
 let admin = "False";
 
 if (admin == "True"){
