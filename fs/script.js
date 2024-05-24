@@ -1,4 +1,5 @@
 const date = new Date();
+console.log(window.location);
 let admin = "False";
 
 if (admin == "True"){
