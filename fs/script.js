@@ -1,5 +1,5 @@
 const date = new Date();
-console.log(window.location.href.indexOf("calendar.html" > -1));
+console.log(window.location.href.indexOf("calendar.html") > -1);
 let admin = "False";
 
 if (admin == "True"){
