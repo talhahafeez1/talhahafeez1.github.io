@@ -1,4 +1,4 @@
-window.color = "#167e56";
+localStorage.setItem("color", "#167e56";
 
 function loginUser(){
     username = document.getElementById("inputUser").value;
@@ -11,7 +11,7 @@ function loginUser(){
             
             // Check if user exists
             if (databaseUserInfo == null){
-                window.alert("User does not exist!");
+                alert("User does not exist!");
                 return;
             } 
             
@@ -23,7 +23,7 @@ function loginUser(){
   
             // Check if user is an admin
             if (databaseUserInfo['admin']){
-                window.color = "red";
+                localStorage.setItem("color", "red");
             }
             window.location.href = "https://talhahafeez1.github.io/calendar.html";
         });

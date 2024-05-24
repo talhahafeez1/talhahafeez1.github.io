@@ -1,6 +1,6 @@
 const date = new Date();
-console.log(window.color);
-document.getElementsByClassName("month")[0].style.backgroundColor = window.color;
+console.log(localStorage.getItem("color"));
+document.getElementsByClassName("month")[0].style.backgroundColor = localStorage.getItem("color");
 
 const novMatchDays = new Set([ // NOVEMBER hardcoded set of exhibition match days
   
