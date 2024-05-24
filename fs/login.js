@@ -1,4 +1,4 @@
-const color = "#167e56";
+window.color = "#167e56";
 
 function loginUser(){
     username = document.getElementById("inputUser").value;
@@ -23,7 +23,7 @@ function loginUser(){
   
             // Check if user is an admin
             if (databaseUserInfo['admin']){
-                color = "red";
+                window.color = "red";
             }
             window.location.href = "https://talhahafeez1.github.io/calendar.html";
         });
@@ -33,5 +33,3 @@ function loginUser(){
 function createAcc() {
     window.location.href = "https://talhahafeez1.github.io/register.html";
 }
-
-export const color1 = color;

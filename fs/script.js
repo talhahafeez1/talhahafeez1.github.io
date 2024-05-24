@@ -1,8 +1,6 @@
-import {color1} from "./login.js";
-
 const date = new Date();
 
-document.getElementsByClassName("month")[0].style.backgroundColor = color1;
+document.getElementsByClassName("month")[0].style.backgroundColor = window.color;
 
 const novMatchDays = new Set([ // NOVEMBER hardcoded set of exhibition match days
   
