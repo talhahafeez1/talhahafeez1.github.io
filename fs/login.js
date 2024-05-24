@@ -34,4 +34,4 @@ function createAcc() {
     window.location.href = "https://talhahafeez1.github.io/register.html";
 }
 
-export { color };
+export const color1 = color;

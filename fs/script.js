@@ -1,4 +1,4 @@
-import color from "./login.js";
+import {color} from "./login.js";
 
 const date = new Date();
 
