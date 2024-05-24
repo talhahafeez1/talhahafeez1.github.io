@@ -97,7 +97,7 @@ let matchClicked = 0;
 let searchKey = "";
 
 // dom event listener for form
-const formEL = document.querySelector('.form');
+const formEL = document.getElementById('submitForm');
 
 // open form 
 function openForm(finalClick) {
