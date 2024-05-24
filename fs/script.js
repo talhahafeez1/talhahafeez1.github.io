@@ -234,7 +234,9 @@ if (document.querySelector('.next') != null){
   document.querySelector('.next').addEventListener('click', () => {
     date.setMonth(date.getMonth() + 1)
     renderCalendar()
-  })
+  });
+  
+  renderCalendar()
 }
 
 // helper function to find object length 
@@ -248,7 +250,7 @@ function objLength(obj) {
   return count;
 }
 
-renderCalendar()
+
 
 function loginUser(){
   username = document.getElementById("inputUser").value;
