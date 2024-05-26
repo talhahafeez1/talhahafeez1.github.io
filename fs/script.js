@@ -13,13 +13,13 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 const write = ref(database, 'posts/write');
-const write_data = null;
+var write_data = null;
 onValue(write, (snapshot) => {
   write_data = snapshot.val();
 });
 
 const read = ref(database, 'posts/read');
-const read_data = null;
+var read_data = null;
 onValue(read, (snapshot) => {
   read_data = snapshot.val();
 });
