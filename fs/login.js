@@ -11,7 +11,7 @@ const app = initializeApp(firebaseConfig);
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
 
-const admin = ref(database, 'users');
+const admin = ref(database, 'posts/users');
 onValue(admin, (snapshot) => {
   const data = snapshot.val();
   console.log(data);
