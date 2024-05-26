@@ -12,10 +12,16 @@ const app = initializeApp(firebaseConfig);
   
 const database = getDatabase(app);
 
-const write = ref(database, 'posts/users');
+const write = ref(database, 'posts/write');
+const write_data = null;
 onValue(write, (snapshot) => {
-  const data = snapshot.val();
-  console.log(data);
+  write_data = snapshot.val();
+});
+
+const read = ref(database, 'posts/read');
+const read_data = null;
+onValue(read, (snapshot) => {
+  read_data = snapshot.val();
 });
 
 document.getElementsByClassName("month")[0].style.backgroundColor = sessionStorage.getItem("col");
@@ -131,30 +137,29 @@ window.openForm = function (finalClick) {
   document.getElementById("title").innerHTML = title;
 
   let teamDetails = ""
-  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
-    .then(res => res.json())
-    .then(data => {
-      let parseData = data["write"][searchKey + matchClicked]; // point to the specific match clicked on the day
-      let loopCount = 1; // incremented counter for looping (use for team number header too) 
+  // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
+  //   .then(res => res.json())
+  //   .then(data => {
+  let parseData = write_data[searchKey + matchClicked]; // point to the specific match clicked on the day
+  let loopCount = 1; // incremented counter for looping (use for team number header too) 
+  for (elem in parseData) { // output only the first two values 
+    if (loopCount == 3) break; // base case 
 
-      for (elem in parseData) { // output only the first two values 
-        if (loopCount == 3) break; // base case 
+    let teamName = parseData[elem].team; // define data pulled from json
+    let teamEmail = parseData[elem].email;
+    let teamCase = parseData[elem].case;
 
-        let teamName = parseData[elem].team; // define data pulled from json
-        let teamEmail = parseData[elem].email;
-        let teamCase = parseData[elem].case;
+    teamDetails += `<div class='formTeam'> <h3>Team ${loopCount}</h3>  <b> Team: </b> ${teamName}</br> <b> Email: </b> ${teamEmail}</br> <b> Case: </b> ${teamCase}</br> </div>`;
+    loopCount++;
 
-        teamDetails += `<div class='formTeam'> <h3>Team ${loopCount}</h3>  <b> Team: </b> ${teamName}</br> <b> Email: </b> ${teamEmail}</br> <b> Case: </b> ${teamCase}</br> </div>`;
-        loopCount++;
-
-        if (objLength(parseData) == 1) {
-          teamDetails += `<div class='formTeam'> <h3>Team ${loopCount}</h3>  <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br> </div>`;
-        }
-      }
-      if (teamDetails != "") document.getElementById("formTop").innerHTML = teamDetails; // append and write html
+    if (objLength(parseData) == 1) {
+      teamDetails += `<div class='formTeam'> <h3>Team ${loopCount}</h3>  <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br> </div>`;
+    }
+  }
+  if (teamDetails != "") document.getElementById("formTop").innerHTML = teamDetails; // append and write html
 
 
-    });
+    // });
 
 }
 
@@ -181,30 +186,30 @@ window.renderDetails = function (matchDay) { // show the details of the match
   searchKey = ("" + keyMonth + matchDay); // concatenate two ints into a string, form search key
 
   let match = ""; // read from db to render match details unique to the day
-  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
-    .then(res => res.json())
-    .then(async data => {
-      let parseData = data["read"][searchKey]; // point to the day clicked
-      for (let i = 1; i < objLength(parseData); i++) {
-        let start = parseData[i].start;
-        let end = parseData[i].end;
-        let moderator = parseData[i].moderator; // read from the parsed data
+  // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
+  //   .then(res => res.json())
+  //   .then(async data => {
+  let parseData = read_data[searchKey]; // point to the day clicked
+  for (let i = 1; i < objLength(parseData); i++) {
+    let start = parseData[i].start;
+    let end = parseData[i].end;
+    let moderator = parseData[i].moderator; // read from the parsed data
 
-        await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
-          .then(res => res.json())
-          .then(writeData => {
-            let writeParse = writeData["write"][searchKey + i]; // point to the day clicked
-            if (objLength(writeParse) == 0) {
-              match += `<p class="option1" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
-            } else if (objLength(writeParse) == 1) {
-              match += `<p class="option2" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
-            } else if (objLength(writeParse) == 2) {
-              match += `<p class="option3" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
-            }
-          });
+    fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
+      .then(res => res.json())
+      .then(writeData => {
+      let writeParse = writeData["write"][searchKey + i]; // point to the day clicked
+      if (objLength(writeParse) == 0) {
+      match += `<p class="option1" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
+      } else if (objLength(writeParse) == 1) {
+        match += `<p class="option2" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
+      } else if (objLength(writeParse) == 2) {
+        match += `<p class="option3" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
       }
-      matchDetails.innerHTML = match;
     });
+  }
+  matchDetails.innerHTML = match;
+    // });
 }
 
 // event listener to write form submissions to db
@@ -214,25 +219,23 @@ formEL.addEventListener('submit', event => {
   const data = Object.fromEntries(formData); // generate the data from the form
   let parseData = "";
 
-  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
-    .then(res => res.json())
-    .then(async readData => {
-      parseData = readData["write"][searchKey + matchClicked]; // point to the day clicked
-      if (objLength(parseData) < 2) {
-        //generates its own unique key in the form of month, day, match number (1 to n)
-        await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/write/' + searchKey + matchClicked + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data) // actual content being written to db from form submission
-        })
-      } else {
-        document.getElementById("popUp").style.display = "block";
-      }
+  // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
+  //   .then(res => res.json())
+  //   .then(async readData => {
+  parseData = write_data[searchKey + matchClicked]; // point to the day clicked
+  if (objLength(parseData) < 2) {
+    //generates its own unique key in the form of month, day, match number (1 to n)
+    fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/write/' + searchKey + matchClicked + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data) // actual content being written to db from form submission
     });
-
-
+    } else {
+      document.getElementById("popUp").style.display = "block";
+    }
+  // });
   clearForm(); // close and clear the form after submission successful 
 });
 
