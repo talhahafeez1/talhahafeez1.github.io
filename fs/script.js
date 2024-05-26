@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getDatabase, ref, onValue} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
-
+import { getDatabase, ref, onValue, on} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
 if (sessionStorage.getItem("loggedIn") == null) {
   window.location.href = "./index.html";
   // window.location.href = "https://talhahafeez1.github.io/index.html";
@@ -12,10 +11,8 @@ const app = initializeApp(firebaseConfig);
   
 const database = getDatabase(app);
 
-const write = ref(database, 'posts/write');
 var write_data = {"write": null};
-
-write.on('value', function (snapshot) {
+const write = firebase.database.ref("posts/write/").on('value', function (snapshot) {
   write_data["write"] = snapshot.val;
 });
 
