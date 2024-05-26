@@ -202,7 +202,7 @@ window.renderDetails = function (matchDay) { // show the details of the match
     //   .then(res => res.json())
     //   .then(writeData => {
     console.log(write_data[0]);
-    let writeParse = write_data[0]["write"][searchKey + i]; // point to the day clicked
+    let writeParse = write_data[0][searchKey + i]; // point to the day clicked
     if (objLength(writeParse) == 0) {
     match += `<p class="option1" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
     } else if (objLength(writeParse) == 1) {
