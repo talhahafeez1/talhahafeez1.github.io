@@ -1,7 +1,22 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
+import { getDatabase, ref, onValue} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+
 if (sessionStorage.getItem("loggedIn") == null) {
   window.location.href = "./index.html";
   // window.location.href = "https://talhahafeez1.github.io/index.html";
 }
+
+const firebaseConfig = { databaseURL: 'https://oebcalendar-c34e0-default-rtdb.firebaseio.com' };
+  
+const app = initializeApp(firebaseConfig);
+  
+const database = getDatabase(app);
+
+const write = ref(database, 'posts/users');
+onValue(admin, (snapshot) => {
+  const data = snapshot.val();
+  console.log(data);
+});
 
 document.getElementsByClassName("month")[0].style.backgroundColor = sessionStorage.getItem("col");
 
@@ -244,7 +259,7 @@ renderCalendar();
 function objLength(obj) {
   let count = 0;
 
-  for (elem in obj) {
+  for (var elem in obj) {
     count++;
   }
 

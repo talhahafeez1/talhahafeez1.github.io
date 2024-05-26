@@ -1,22 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
-
-const firebaseConfig = {
-    databaseURL: 'https://oebcalendar-c34e0-default-rtdb.firebaseio.com',
-  };
-  
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-  
-// Initialize Realtime Database and get a reference to the service
-const database = getDatabase(app);
-
-const admin = ref(database, 'posts/users');
-onValue(admin, (snapshot) => {
-  const data = snapshot.val();
-  console.log(data);
-});
-
 window.loginUser = function (){
     var username = document.getElementById("inputUser").value;
     var password = document.getElementById("inputPassword").value;
