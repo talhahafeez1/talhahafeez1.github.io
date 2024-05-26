@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getDatabase, ref, onChildChanged, onChildAdded, onChildRemoved } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+import { getDatabase, ref, onValue, onChildChanged, onChildAdded, onChildRemoved } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
 if (sessionStorage.getItem("loggedIn") == null) {
   window.location.href = "./index.html";
   // window.location.href = "https://talhahafeez1.github.io/index.html";
