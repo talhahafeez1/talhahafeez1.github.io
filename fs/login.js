@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
 
 const firebaseConfig = {
     databaseURL: 'https://oebcalendar-c34e0-default-rtdb.firebaseio.com',
