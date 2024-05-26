@@ -11,9 +11,9 @@
 //     $('#'+snapshot.key).replaceWith(content)
 // });
 
-import firebase from "firebase";
+// import firebase from "firebase";
 
-function loginUser(){
+window.loginUser = function (){
     username = document.getElementById("inputUser").value;
     password = document.getElementById("inputPassword").value;
     if (username != ""){
@@ -48,10 +48,7 @@ function loginUser(){
     }
   }
   
-  function createAcc() {
+window.createAcc = function () {
     // window.location.href = "https://talhahafeez1.github.io/register.html";
     window.location.href = "./register.html";
   }
-
-globalThis.createAcc = createAcc;
-globalThis.loginUser = loginUser;
