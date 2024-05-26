@@ -1,32 +1,21 @@
-// database.on('child_changed', function(snapshot){
-//     var data = snapshot.val();
-
-//     var content = '<tr id="'+snapshot.key+'">';
-//     content += '<td>' + data.CustomerName + '</td>';//column2
-//     content += '<td>' + data.TimeEffected + '</td>'; //column1 
-//     content += '<td>' + data.DateEffected + '</td>'; //column1
-//     content += '<td>' + data.Successful + '</td>'; //column1
-//     content += '</tr>';
-
-//     $('#'+snapshot.key).replaceWith(content)
-// });
-
-// import firebase from "firebase";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getDatabase } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
 
 const firebaseConfig = {
-    // ...
-    // The value of `databaseURL` depends on the location of the database
     databaseURL: 'https://oebcalendar-c34e0-default-rtdb.firebaseio.com',
   };
   
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
   
-  
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
+
+const admin = ref(database, 'users/admin');
+onValue(admin, (snapshot) => {
+  const data = snapshot.val();
+  console.log(data);
+});
 
 window.loginUser = function (){
     var username = document.getElementById("inputUser").value;
