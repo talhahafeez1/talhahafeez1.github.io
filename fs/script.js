@@ -146,7 +146,7 @@ window.openForm = function (finalClick) {
   // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
   //   .then(res => res.json())
   //   .then(data => {
-  let parseData = write_data[searchKey + matchClicked]; // point to the specific match clicked on the day
+  let parseData = write_data[0][searchKey + matchClicked]; // point to the specific match clicked on the day
   let loopCount = 1; // incremented counter for looping (use for team number header too) 
   for (elem in parseData) { // output only the first two values 
     if (loopCount == 3) break; // base case 
@@ -195,7 +195,7 @@ window.renderDetails = function (matchDay) { // show the details of the match
   // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
   //   .then(res => res.json())
   //   .then(async data => {
-  let parseData = read_data[searchKey]; // point to the day clicked
+  let parseData = read_data[0][searchKey]; // point to the day clicked
   for (let i = 1; i < objLength(parseData); i++) {
     let start = parseData[i].start;
     let end = parseData[i].end;
@@ -228,7 +228,7 @@ formEL.addEventListener('submit', event => {
   // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
   //   .then(res => res.json())
   //   .then(async readData => {
-  parseData = write_data[searchKey + matchClicked]; // point to the day clicked
+  parseData = write_data[0][searchKey + matchClicked]; // point to the day clicked
   if (objLength(parseData) < 2) {
     //generates its own unique key in the form of month, day, match number (1 to n)
     fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/write/' + searchKey + matchClicked + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
