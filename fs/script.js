@@ -13,12 +13,33 @@ const database = getDatabase(app);
 
 var write_data = [0];
 const write = ref(database, 'posts/write');
-onValue(write, (snapshot) => {
-  write_data[0] = snapshot.val;
+var write_data = null;
+onChildAdded(write, (data) => {
+  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
+    .then(res => res.json())
+    .then(data => {
+        write_data = data;
+    });
+});
+
+onChildChanged(write, (data) => {
+  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
+    .then(res => res.json())
+    .then(data => {
+        write_data = data;
+    });
+});
+
+onChildRemoved(write, (data) => {
+  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
+    .then(res => res.json())
+    .then(data => {
+        write_data = data;
+    });
 });
 
 // onValue(write, (snapshot) => {
-//   write_data["write"] = snapshot.val();
+//   write_data[0] = snapshot.val;
 // });
 
 const read = ref(database, 'posts/read');
@@ -28,7 +49,7 @@ onValue(read, (snapshot) => {
 });
 
 console.log(JSON.stringify(read_data));
-console.log(JSON.stringify(write_data));
+console.log(write_data);
 
 document.getElementsByClassName("month")[0].style.backgroundColor = sessionStorage.getItem("col");
 
@@ -201,18 +222,18 @@ window.renderDetails = function (matchDay) { // show the details of the match
     let end = parseData[i].end;
     let moderator = parseData[i].moderator; // read from the parsed data
 
-    fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
-      .then(res => res.json())
-      .then(writeData => {
-      let writeParse = writeData["write"][searchKey + i]; // point to the day clicked
-      if (objLength(writeParse) == 0) {
-      match += `<p class="option1" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
-      } else if (objLength(writeParse) == 1) {
-        match += `<p class="option2" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
-      } else if (objLength(writeParse) == 2) {
-        match += `<p class="option3" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
-      }
-    });
+    // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
+    //   .then(res => res.json())
+    //   .then(writeData => {
+    let writeParse = writeData[0]["write"][searchKey + i]; // point to the day clicked
+    if (objLength(writeParse) == 0) {
+    match += `<p class="option1" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
+    } else if (objLength(writeParse) == 1) {
+      match += `<p class="option2" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
+    } else if (objLength(writeParse) == 2) {
+      match += `<p class="option3" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
+    }
+    // });
   }
   matchDetails.innerHTML = match;
     // });
