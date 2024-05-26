@@ -15,7 +15,7 @@ const database = getDatabase(app);
 const write = ref(database, 'posts/write');
 var write_data = {"write": null};
 onValue(write, (snapshot) => {
-  write_data["write"] = write_data = snapshot.val();
+  write_data["write"] = snapshot.val();
 });
 
 const read = ref(database, 'posts/read');
