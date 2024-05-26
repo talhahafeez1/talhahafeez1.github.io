@@ -13,7 +13,7 @@ const database = getDatabase(app);
 
 const write = ref(database, 'posts/write');
 onValue(write, (snapshot) => {
-  get_write_data(snapshot.val);
+  get_write_data(snapshot.val());
 });
 
 var write_data = null;
