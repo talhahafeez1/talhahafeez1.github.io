@@ -1,8 +1,14 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+
 if (sessionStorage.getItem("loggedIn") == null) {
   window.location.href = "https://talhahafeez1.github.io/index.html";
 }
+
+// variables defined globally to provide event listener access 
+let matchClicked = 0;
+let searchKey = "";
+let matchDay_saved = null;
 
 const firebaseConfig = { databaseURL: 'https://oebcalendar-c34e0-default-rtdb.firebaseio.com' };
   
@@ -14,6 +20,11 @@ const write = ref(database, 'posts/write');
 var write_data = [0];
 onValue(write, (snapshot) => {
   write_data[0] = snapshot.val();
+  if (matchClicked != 0 && searchKey != "" && matchDay_saved != null){
+    console.log("Changed");
+    renderDetails(matchDay_saved);
+    openForm(matchClicked);
+  }
 });
 
 const read = ref(database, 'posts/read');
@@ -118,10 +129,6 @@ const renderCalendar = () => {
   monthDays.innerHTML = days;
 }
 
-// variables defined globally to provide event listener access 
-let matchClicked = 0;
-let searchKey = "";
-
 // dom event listener for form
 const formEL = document.querySelector('.form');
 
@@ -162,6 +169,7 @@ window.clearForm = function () {
 
 // render the match details 
 window.renderDetails = function (matchDay) { // show the details of the match
+  matchDay_saved = matchDay;
   const matchDetails = document.querySelector(".matchDetails");
   const title = document.querySelector(".dayClicked");
   let keyMonth = date.getMonth() + 1; // getmonth() returns index value, increment by 1 to match real value
