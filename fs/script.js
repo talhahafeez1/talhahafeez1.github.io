@@ -27,8 +27,8 @@ onValue(read, (snapshot) => {
   read_data[0] = snapshot.val();
 });
 
-console.log(read_data);
-console.log(write_data);
+console.log(JSON.stringify(read_data));
+console.log(JSON.stringify(write_data));
 
 document.getElementsByClassName("month")[0].style.backgroundColor = sessionStorage.getItem("col");
 
