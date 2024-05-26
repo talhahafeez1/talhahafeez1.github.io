@@ -22,6 +22,7 @@ const read = ref(database, 'posts/read');
 var read_data = null;
 onValue(read, (snapshot) => {
   read_data = snapshot.val();
+  console.log(read_data);
 });
 
 console.log(read_data);
