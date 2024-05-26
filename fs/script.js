@@ -198,6 +198,7 @@ formEL.addEventListener('submit', event => {
   let parseData = "";
 
   parseData = write_data[0][searchKey + matchClicked]; // point to the day clicked
+  console.log(parseData);
   if (objLength(parseData) < 2) {
     //generates its own unique key in the form of month, day, match number (1 to n)
     fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/write/' + searchKey + matchClicked + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
