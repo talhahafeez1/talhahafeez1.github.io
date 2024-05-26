@@ -19,11 +19,6 @@ onValue(write, (snapshot) => {
 var write_data = null;
 function get_write_data(new_val){
   console.log(new_val);
-  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
-    .then(res => res.json())
-    .then(async data => {
-      write_data = data;
-    });
 } 
 
 const read = ref(database, 'posts/read');
