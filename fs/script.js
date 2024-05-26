@@ -14,9 +14,14 @@ const database = getDatabase(app);
 
 const write = ref(database, 'posts/write');
 var write_data = {"write": null};
-onValue(write, (snapshot) => {
-  write_data["write"] = snapshot.val();
+
+write.on('value', function (snapshot) {
+  write_data["write"] = snapshot.val;
 });
+
+// onValue(write, (snapshot) => {
+//   write_data["write"] = snapshot.val();
+// });
 
 const read = ref(database, 'posts/read');
 var read_data = {"read": null};
@@ -25,7 +30,7 @@ onValue(read, (snapshot) => {
 });
 
 console.log(read_data);
-console.log(write_data["write"]);
+console.log(write_data);
 
 document.getElementsByClassName("month")[0].style.backgroundColor = sessionStorage.getItem("col");
 
