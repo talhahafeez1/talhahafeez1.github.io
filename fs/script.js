@@ -4,11 +4,6 @@ if (sessionStorage.getItem("loggedIn") == null) {
   window.location.href = "https://talhahafeez1.github.io/index.html";
 }
 
-// variables defined globally to provide event listener access 
-let matchClicked = 0;
-let searchKey = "";
-let matchDay_saved = null;
-
 const firebaseConfig = { databaseURL: 'https://oebcalendar-c34e0-default-rtdb.firebaseio.com' };
   
 const app = initializeApp(firebaseConfig);
@@ -25,11 +20,6 @@ const read = ref(database, 'posts/read');
 var read_data = [0];
 onValue(read, (snapshot) => {
   read_data[0] = snapshot.val();
-  if (searchKey != "" && matchClicked == 0 && matchDay_saved != null){
-    openForm(matchClicked);
-    renderDetails(matchDay_saved);
-
-  }
 });
 
 document.getElementsByClassName("month")[0].style.backgroundColor = sessionStorage.getItem("col");
@@ -128,6 +118,10 @@ const renderCalendar = () => {
   monthDays.innerHTML = days;
 }
 
+// variables defined globally to provide event listener access 
+let matchClicked = 0;
+let searchKey = "";
+
 // dom event listener for form
 const formEL = document.getElementById('submitForm');
 
@@ -168,7 +162,6 @@ window.clearForm = function () {
 
 // render the match details 
 window.renderDetails = function (matchDay) { // show the details of the match
-  matchDay_saved = matchDay;
   const matchDetails = document.querySelector(".matchDetails");
   const title = document.querySelector(".dayClicked");
   let keyMonth = date.getMonth() + 1; // getmonth() returns index value, increment by 1 to match real value
