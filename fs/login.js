@@ -27,13 +27,11 @@ window.loginUser = function (){
             }
 
             sessionStorage.setItem("loggedIn", "True");
-            // window.location.href = "https://talhahafeez1.github.io/calendar.html";
-            window.location.href = "./calendar.html";
+            window.location.href = "https://talhahafeez1.github.io/calendar.html";
         });
     }
   }
   
 window.createAcc = function () {
-    // window.location.href = "https://talhahafeez1.github.io/register.html";
-    window.location.href = "./register.html";
-  }
+    window.location.href = "https://talhahafeez1.github.io/register.html";
+}

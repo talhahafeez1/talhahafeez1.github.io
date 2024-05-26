@@ -1,8 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getDatabase, ref, onValue, onChildChanged, onChildAdded, onChildRemoved } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
 if (sessionStorage.getItem("loggedIn") == null) {
-  window.location.href = "./index.html";
-  // window.location.href = "https://talhahafeez1.github.io/index.html";
+  window.location.href = "https://talhahafeez1.github.io/index.html";
 }
 
 const firebaseConfig = { databaseURL: 'https://oebcalendar-c34e0-default-rtdb.firebaseio.com' };
@@ -16,11 +15,6 @@ var write_data = [0];
 onValue(write, (snapshot) => {
   write_data[0] = snapshot.val();
 });
-
-
-// function get_write_data(new_val){
-//   write_data[0] = new_val;
-// } 
 
 const read = ref(database, 'posts/read');
 var read_data = [0];
@@ -124,7 +118,6 @@ const renderCalendar = () => {
   monthDays.innerHTML = days;
 }
 
-
 // variables defined globally to provide event listener access 
 let matchClicked = 0;
 let searchKey = "";
@@ -141,9 +134,6 @@ window.openForm = function (finalClick) {
   document.getElementById("title").innerHTML = title;
 
   let teamDetails = ""
-  // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
-  //   .then(res => res.json())
-  //   .then(data => {
   let parseData = write_data[0][searchKey + matchClicked]; // point to the specific match clicked on the day
   let loopCount = 1; // incremented counter for looping (use for team number header too) 
   for (var elem in parseData) { // output only the first two values 
@@ -161,10 +151,6 @@ window.openForm = function (finalClick) {
     }
   }
   if (teamDetails != "") document.getElementById("formTop").innerHTML = teamDetails; // append and write html
-
-
-    // });
-
 }
 
 // close form 
@@ -173,9 +159,6 @@ window.clearForm = function () {
   document.getElementById("submitForm").reset(); // empty the fields
   document.getElementById("formTop").innerHTML = "<div class='formTeam'><h3>Team 1</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br></div><div class='formTeam'><h3>Team 2</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br></div>"
 }
-
-
-
 
 // render the match details 
 window.renderDetails = function (matchDay) { // show the details of the match
@@ -190,19 +173,11 @@ window.renderDetails = function (matchDay) { // show the details of the match
   searchKey = ("" + keyMonth + matchDay); // concatenate two ints into a string, form search key
 
   let match = ""; // read from db to render match details unique to the day
-  // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
-  //   .then(res => res.json())
-  //   .then(async data => {
   let parseData = read_data[0][searchKey]; // point to the day clicked
   for (let i = 1; i < objLength(parseData); i++) {
     let start = parseData[i].start;
     let end = parseData[i].end;
     let moderator = parseData[i].moderator; // read from the parsed data
-
-    // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
-    //   .then(res => res.json())
-    //   .then(writeData => {
-    console.log(write_data[0]);
     let writeParse = write_data[0][searchKey + i]; // point to the day clicked
     if (objLength(writeParse) == 0) {
     match += `<p class="option1" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
@@ -211,10 +186,8 @@ window.renderDetails = function (matchDay) { // show the details of the match
     } else if (objLength(writeParse) == 2) {
       match += `<p class="option3" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
     }
-    // });
   }
   matchDetails.innerHTML = match;
-    // });
 }
 
 // event listener to write form submissions to db
@@ -224,10 +197,6 @@ formEL.addEventListener('submit', event => {
   const data = Object.fromEntries(formData); // generate the data from the form
   let parseData = "";
 
-  // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
-  //   .then(res => res.json())
-  //   .then(async readData => {
-  console.log(write_data);
   parseData = write_data[0][searchKey + matchClicked]; // point to the day clicked
   if (objLength(parseData) < 2) {
     //generates its own unique key in the form of month, day, match number (1 to n)
@@ -238,10 +207,9 @@ formEL.addEventListener('submit', event => {
       },
       body: JSON.stringify(data) // actual content being written to db from form submission
     });
-    } else {
-      document.getElementById("popUp").style.display = "block";
-    }
-  // });
+  } else {
+    document.getElementById("popUp").style.display = "block";
+  }
   clearForm(); // close and clear the form after submission successful 
 });
 
