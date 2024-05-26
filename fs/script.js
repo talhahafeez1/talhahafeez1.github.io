@@ -24,6 +24,9 @@ onValue(read, (snapshot) => {
   read_data = snapshot.val();
 });
 
+console.log(read_data);
+console.log(write_data);
+
 document.getElementsByClassName("month")[0].style.backgroundColor = sessionStorage.getItem("col");
 
 const date = new Date();
