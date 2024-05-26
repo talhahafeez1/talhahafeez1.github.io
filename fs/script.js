@@ -1,10 +1,11 @@
-const date = new Date();
-console.log(window.location.href.indexOf("calendar.html") > -1);
-let admin = "False";
-
-if (admin == "True"){
-  document.getElementsByClassName("month")[0].style.background_color = "red";
+if (sessionStorage.getItem("loggedIn") == null) {
+  window.location.href = "./index.html";
+  // window.location.href = "https://talhahafeez1.github.io/index.html";
 }
+
+document.getElementsByClassName("month")[0].style.backgroundColor = sessionStorage.getItem("col");
+
+const date = new Date();
 
 const novMatchDays = new Set([ // NOVEMBER hardcoded set of exhibition match days
   
@@ -37,6 +38,7 @@ const monthDict = {
   11: "November",
   12: "December",
 }
+
 
 const renderCalendar = () => {
 
@@ -191,59 +193,52 @@ function renderDetails(matchDay) { // show the details of the match
 }
 
 // event listener to write form submissions to db
-if (formEL != null){
-  formEL.addEventListener('submit', event => {
-    event.preventDefault();
-    const formData = new FormData(formEL);
-    const data = Object.fromEntries(formData); // generate the data from the form
-    let parseData = "";
+formEL.addEventListener('submit', event => {
+  event.preventDefault();
+  const formData = new FormData(formEL);
+  const data = Object.fromEntries(formData); // generate the data from the form
+  let parseData = "";
 
-    fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
-      .then(res => res.json())
-      .then(async readData => {
-        parseData = readData["write"][searchKey + matchClicked]; // point to the day clicked
-        if (objLength(parseData) < 2) {
-          //generates its own unique key in the form of month, day, match number (1 to n)
-          await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/write/' + searchKey + matchClicked + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data) // actual content being written to db from form submission
-          })
-        } else {
-          document.getElementById("popUp").style.display = "block";
-        }
-      });
+  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
+    .then(res => res.json())
+    .then(async readData => {
+      parseData = readData["write"][searchKey + matchClicked]; // point to the day clicked
+      if (objLength(parseData) < 2) {
+        //generates its own unique key in the form of month, day, match number (1 to n)
+        await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/write/' + searchKey + matchClicked + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data) // actual content being written to db from form submission
+        })
+      } else {
+        document.getElementById("popUp").style.display = "block";
+      }
+    });
 
 
-    clearForm(); // close and clear the form after submission successful 
-  })
-}
+  clearForm(); // close and clear the form after submission successful 
+});
 
-if (document.getElementById("confirmButton") != null){
-  document.getElementById("confirmButton").addEventListener('click', () => {
-    document.getElementById("popUp").style.display = "none";
-  })
-}
+
+document.getElementById("confirmButton").addEventListener('click', () => {
+  document.getElementById("popUp").style.display = "none";
+});
 
 
 // event listeners to change months
-if (document.querySelector('.prev') != null){
-  document.querySelector('.prev').addEventListener('click', () => {
-    date.setMonth(date.getMonth() - 1)
-    renderCalendar()
-  })
-}
+document.querySelector('.prev').addEventListener('click', () => {
+  date.setMonth(date.getMonth() - 1);
+  renderCalendar();
+});
 
-if (document.querySelector('.next') != null){
-  document.querySelector('.next').addEventListener('click', () => {
-    date.setMonth(date.getMonth() + 1)
-    renderCalendar()
-  });
-  
-  renderCalendar()
-}
+document.querySelector('.next').addEventListener('click', () => {
+  date.setMonth(date.getMonth() + 1);
+  renderCalendar();
+});
+
+renderCalendar();
 
 // helper function to find object length 
 function objLength(obj) {
@@ -254,38 +249,4 @@ function objLength(obj) {
   }
 
   return count;
-}
-
-function loginUser(){
-  username = document.getElementById("inputUser").value;
-  password = document.getElementById("inputPassword").value;
-  if (username != ""){
-      fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
-      .then(res => res.json())
-      .then(async data => {
-          let databaseUserInfo = data["users"][username]; // point to the day clicked
-          
-          // Check if user exists
-          if (databaseUserInfo == null){
-              alert("User does not exist!");
-              return;
-          } 
-          
-          // Check if password matches database saved password
-          if (databaseUserInfo['pass'] != password){
-              alert("Password is not correct! Please try again!");
-              return;
-          }
-          // Check if user is an admin
-          if (databaseUserInfo['admin']){
-            admin = "True";
-          }
-
-          window.location.href = "https://talhahafeez1.github.io/calendar.html";
-      });
-  }
-}
-
-function createAcc() {
-  window.location.href = "https://talhahafeez1.github.io/register.html";
 }

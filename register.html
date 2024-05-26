@@ -4,22 +4,28 @@
         <meta charset="UTF-8" http-equiv="Permissions-Policy" content="interest-cohort=()" />
         <link rel="stylesheet" href="fs/style.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
-        <script src="fs/register.js"></script>
     </head>
 
     <body>
-        <!-- <div class="login_container">
-            <form class="login_form" id="submit_loginForm">
-                <label name="username"><b>Username:</b>
-                  <input id="inputUser" name="user" type="text" placeholder="Username" value="" required>
+        <div class="register_container">
+            <div class="register_form" id="submit_registerForm">
+                <label name="register_username"><b>New Username:</b>
+                  <input id="inputregisterUser" name="registerUser" type="text" placeholder="New Username" 
+                  value="" required>
                 </label>
-                <label name="password"><b>Password:</b>
-                    <input id="inputPassword" name="team" type="password" value="" required>
-                  </label>
-                <button type="submit" class="btn login">Login</button>
-                <a href="register.html">Register</a>
-              </form>
-        </div> -->
+                <label name="register_password"><b>Password:</b>
+                  <input id="inputregisterPassword" name="registerPassword" type="password" value="" 
+                  placeholder="New Password" required>
+                </label>
+                <label name="register_team"><b>Team:</b>
+                  <input id="inputregisterTeam" name="registerTeam" type="text" placeholder="New Team" 
+                  value="" required>
+                </label>
+                <button type="submit" class="btn register" onClick="createUser()">Create User</button>
+                <button type="login" class="btn login" onClick="login()">Login</a>
+          </div>
+        </div>
+        <script src="fs/register.js"></script>
     </body>
 
 

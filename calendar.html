@@ -66,48 +66,46 @@
     </div>
 
 
-    <div class="formContainer" id="myForm" autocomplete="off">
-      <div id="formTop" class="formTop">
-        HELLO WORLD
-          <div class='formTeam'>
-            <h3>Team 1</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br>
-          </div>
-          <div class='formTeam'>
-            <h3>Team 2</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br>
-          </div>
+      <div class="formContainer" id="myForm" autocomplete="off">
+        <div id="formTop" class="formTop">
+          HELLO WORLD
+            <div class='formTeam'>
+              <h3>Team 1</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br>
+            </div>
+            <div class='formTeam'>
+              <h3>Team 2</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br>
+            </div>
+        </div>
+        <form class="form" id="submitForm">
+          <h2 id="title"></h2>
+
+          <label name="teamName"><b>Team Name</b>
+            <input id="inputTeam" name="team" type="text" placeholder="Team Name" value="" required>
+          </label>
+
+          <label name="email"><b>Email</b>
+            <input id="inputEmail" name="email" type="text" placeholder="Enter Email" value="" required>
+          </label>
+
+          <label name="cases"><b>Pick a Case</b>
+            <input id="inputCase" name="case" type="text" placeholder="Case Name" value="" required>
+          </label>
+
+          <button type="submit" class="btn submit">Save</button>
+          <button type="button" class="btn cancel" onclick="clearForm()">Cancel</button>
+        </form>
       </div>
-      <form class="form" id="submitForm">
-        <h2 id="title"></h2>
 
-        <label name="teamName"><b>Team Name</b>
-          <input id="inputTeam" name="team" type="text" placeholder="Team Name" value="" required>
-        </label>
 
-        <label name="email"><b>Email</b>
-          <input id="inputEmail" name="email" type="text" placeholder="Enter Email" value="" required>
-        </label>
-
-        <label name="cases"><b>Pick a Case</b>
-          <input id="inputCase" name="case" type="text" placeholder="Case Name" value="" required>
-        </label>
-
-        <button type="submit" class="btn submit">Save</button>
-        <button type="button" class="btn cancel" onclick="clearForm()">Cancel</button>
-      </form>
+      <div id="popUp">
+        <h1>Error booking match</h1>
+        <br>
+        <p>The slots for this match were filled before you completed your booking. Please refresh the page.</p>
+        <br>
+        <button class="btn" type="error" id="confirmButton"> OK
+        </button>
+      </div>
     </div>
-
-
-    <div id="popUp">
-      <h1>Error booking match</h1>
-      <br>
-      <p>The slots for this match were filled before you completed your booking. Please refresh the page.</p>
-      <br>
-      <button class="btn" type="error" id="confirmButton"> OK
-      </button>
-    </div>
-    </div>
-
-
     <script src="./fs/script.js"></script>
 </body>
 
