@@ -11,36 +11,20 @@ const app = initializeApp(firebaseConfig);
   
 const database = getDatabase(app);
 
-var write_data = [0];
 const write = ref(database, 'posts/write');
+onValue(write, (snapshot) => {
+  get_write_data(snapshot.val);
+});
+
 var write_data = null;
-onChildAdded(write, (data) => {
-  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
+function get_write_data(new_val){
+  console.log(new_val);
+  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
     .then(res => res.json())
-    .then(data => {
-        write_data[0] = data;
+    .then(async data => {
+      write_data = data;
     });
-});
-
-onChildChanged(write, (data) => {
-  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
-    .then(res => res.json())
-    .then(data => {
-        write_data[0] = data;
-    });
-});
-
-onChildRemoved(write, (data) => {
-  fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
-    .then(res => res.json())
-    .then(data => {
-        write_data[0] = data;
-    });
-});
-
-// onValue(write, (snapshot) => {
-//   write_data[0] = snapshot.val;
-// });
+} 
 
 const read = ref(database, 'posts/read');
 var read_data = [0];
