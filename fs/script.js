@@ -21,7 +21,6 @@ var write_data = [0];
 onValue(write, (snapshot) => {
   write_data[0] = snapshot.val();
   if (matchClicked != 0 && searchKey != "" && matchDay_saved != null){
-    console.log("Changed");
     renderDetails(matchDay_saved);
     openForm(matchClicked);
   }
