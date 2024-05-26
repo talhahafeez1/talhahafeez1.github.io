@@ -201,6 +201,7 @@ window.renderDetails = function (matchDay) { // show the details of the match
     // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
     //   .then(res => res.json())
     //   .then(writeData => {
+    console.log(write_data);
     let writeParse = write_data[0]["write"][searchKey + i]; // point to the day clicked
     if (objLength(writeParse) == 0) {
     match += `<p class="option1" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
