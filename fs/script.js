@@ -20,12 +20,12 @@ onValue(write, (snapshot) => {
 
 const read = ref(database, 'posts/read');
 var read_data = {"read": null};
-var read_data = onValue(read, (snapshot) => {
+onValue(read, (snapshot) => {
   read_data["read"] = snapshot.val();
 });
 
 console.log(read_data);
-console.log(write_data);
+console.log(write_data["write"]);
 
 document.getElementsByClassName("month")[0].style.backgroundColor = sessionStorage.getItem("col");
 
