@@ -123,12 +123,12 @@ let matchClicked = 0;
 let searchKey = "";
 
 // dom event listener for form
-const formEL = document.getElementById('submitForm');
+const formEL = document.querySelector('.form');
 
 // open form 
 window.openForm = function (finalClick) {
   document.getElementById("myForm").style.display = "block"
-  var matchClicked = finalClick; // assign the match clicked to global variable
+  matchClicked = finalClick; // assign the match clicked to global variable
 
   let title = "Book an Exhibition Match" // dynamically written title 
   document.getElementById("title").innerHTML = title;
@@ -196,8 +196,6 @@ formEL.addEventListener('submit', event => {
   const formData = new FormData(formEL);
   const data = Object.fromEntries(formData); // generate the data from the form
   let parseData = "";
-  console.log(write_data[0]);
-  console.log(searchKey + matchClicked);
   parseData = write_data[0][searchKey + matchClicked]; // point to the day clicked
   if (objLength(parseData) < 2) {
     //generates its own unique key in the form of month, day, match number (1 to n)
