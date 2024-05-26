@@ -108,9 +108,9 @@ let searchKey = "";
 const formEL = document.getElementById('submitForm');
 
 // open form 
-function openForm(finalClick) {
+window.openForm = function (finalClick) {
   document.getElementById("myForm").style.display = "block"
-  matchClicked = finalClick; // assign the match clicked to global variable
+  var matchClicked = finalClick; // assign the match clicked to global variable
 
   let title = "Book an Exhibition Match" // dynamically written title 
   document.getElementById("title").innerHTML = title;
@@ -144,7 +144,7 @@ function openForm(finalClick) {
 }
 
 // close form 
-function clearForm() {
+window.clearForm = function () {
   document.getElementById("myForm").style.display = "none"; // hide pop up form
   document.getElementById("submitForm").reset(); // empty the fields
   document.getElementById("formTop").innerHTML = "<div class='formTeam'><h3>Team 1</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br></div><div class='formTeam'><h3>Team 2</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br></div>"
@@ -154,7 +154,7 @@ function clearForm() {
 
 
 // render the match details 
-function renderDetails(matchDay) { // show the details of the match
+window.renderDetails = function (matchDay) { // show the details of the match
   const matchDetails = document.querySelector(".matchDetails");
   const title = document.querySelector(".dayClicked");
   let keyMonth = date.getMonth() + 1; // getmonth() returns index value, increment by 1 to match real value
