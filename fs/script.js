@@ -12,14 +12,15 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 const write = ref(database, 'posts/write');
+var write_data = [0];
 onValue(write, (snapshot) => {
-  get_write_data(snapshot.val());
+  write_data[0] = snapshot.val();
 });
 
-var write_data = [0];
-function get_write_data(new_val){
-  write_data[0] = new_val;
-} 
+
+// function get_write_data(new_val){
+//   write_data[0] = new_val;
+// } 
 
 const read = ref(database, 'posts/read');
 var read_data = [0];
@@ -145,7 +146,7 @@ window.openForm = function (finalClick) {
   //   .then(data => {
   let parseData = write_data[0][searchKey + matchClicked]; // point to the specific match clicked on the day
   let loopCount = 1; // incremented counter for looping (use for team number header too) 
-  for (elem in parseData) { // output only the first two values 
+  for (var elem in parseData) { // output only the first two values 
     if (loopCount == 3) break; // base case 
 
     let teamName = parseData[elem].team; // define data pulled from json
