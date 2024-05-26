@@ -18,7 +18,7 @@ onChildAdded(write, (data) => {
   fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
     .then(res => res.json())
     .then(data => {
-        write_data = data;
+        write_data[0] = data;
     });
 });
 
@@ -26,7 +26,7 @@ onChildChanged(write, (data) => {
   fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
     .then(res => res.json())
     .then(data => {
-        write_data = data;
+        write_data[0] = data;
     });
 });
 
@@ -34,7 +34,7 @@ onChildRemoved(write, (data) => {
   fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')  // ASYNC AWAIT 
     .then(res => res.json())
     .then(data => {
-        write_data = data;
+        write_data[0] = data;
     });
 });
 
