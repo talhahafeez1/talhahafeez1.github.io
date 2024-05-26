@@ -16,9 +16,9 @@ onValue(write, (snapshot) => {
   get_write_data(snapshot.val());
 });
 
-var write_data = null;
+var write_data = [0];
 function get_write_data(new_val){
-  console.log(new_val);
+  write_data[0] = new_val;
 } 
 
 const read = ref(database, 'posts/read');
@@ -26,9 +26,6 @@ var read_data = [0];
 onValue(read, (snapshot) => {
   read_data[0] = snapshot.val();
 });
-
-console.log(JSON.stringify(read_data));
-console.log(write_data);
 
 document.getElementsByClassName("month")[0].style.backgroundColor = sessionStorage.getItem("col");
 
@@ -228,6 +225,7 @@ formEL.addEventListener('submit', event => {
   // fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
   //   .then(res => res.json())
   //   .then(async readData => {
+  console.log(write_data);
   parseData = write_data[0][searchKey + matchClicked]; // point to the day clicked
   if (objLength(parseData) < 2) {
     //generates its own unique key in the form of month, day, match number (1 to n)
