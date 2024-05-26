@@ -13,7 +13,7 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 const write = ref(database, 'posts/users');
-onValue(admin, (snapshot) => {
+onValue(write, (snapshot) => {
   const data = snapshot.val();
   console.log(data);
 });
