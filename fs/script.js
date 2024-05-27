@@ -11,9 +11,7 @@ let searchKey = "";
 let matchDay_saved = null;
 
 const firebaseConfig = { databaseURL: 'https://oebcalendar-c34e0-default-rtdb.firebaseio.com' };
-  
 const app = initializeApp(firebaseConfig);
-  
 const database = getDatabase(app);
 
 const write = ref(database, 'posts/write');
@@ -38,20 +36,20 @@ const date = new Date();
 
 const novMatchDays = new Set([ // NOVEMBER hardcoded set of exhibition match days
   
-])
+]);
 
 const decMatchDays = new Set([ // DECEMBER hardcoded set of exhibition match days
   15
-])
+]);
 
 const janMatchDays = new Set([ // JANUARY hardcoded set of exhibition match days
   11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
   26, 29, 30, 31
-])
+]);
 
 const febMatchDays = new Set([ // FEBRUARY hardcoded set of exhibition match days
   1
-])
+]);
 
 const monthDict = {
   1: "January",

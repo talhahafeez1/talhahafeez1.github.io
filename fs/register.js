@@ -13,7 +13,7 @@ function createUser() {
         parseData = readData["users"]; // point to the day clicked
 
         if (parseData[username] != null) {
-            alert("Another user with the username entered already exists!");
+            alert("Another user with the email entered already exists!");
             return;
         }
         for (let i = 0; i < objLength(parseData); i++){
