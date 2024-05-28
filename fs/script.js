@@ -15,7 +15,7 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 const write = ref(database, 'posts/write');
-var write_data = [0];
+var write_data = [[]];
 onValue(write, (snapshot) => {
   write_data[0] = snapshot.val();
   if (matchClicked != 0 && searchKey != "" && matchDay_saved != null){
@@ -25,31 +25,19 @@ onValue(write, (snapshot) => {
 });
 
 const read = ref(database, 'posts/read');
-var read_data = [0];
+var read_data = [[]];
 onValue(read, (snapshot) => {
   read_data[0] = snapshot.val();
+  renderCalendar();
+  if (matchClicked != 0 && searchKey != "" && matchDay_saved != null){
+    renderDetails(matchDay_saved);
+    openForm(matchClicked);
+  }
 });
 
 document.getElementsByClassName("month")[0].style.backgroundColor = sessionStorage.getItem("col");
 
 const date = new Date();
-
-const novMatchDays = new Set([ // NOVEMBER hardcoded set of exhibition match days
-  
-]);
-
-const decMatchDays = new Set([ // DECEMBER hardcoded set of exhibition match days
-  15
-]);
-
-const janMatchDays = new Set([ // JANUARY hardcoded set of exhibition match days
-  11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-  26, 29, 30, 31
-]);
-
-const febMatchDays = new Set([ // FEBRUARY hardcoded set of exhibition match days
-  1
-]);
 
 const monthDict = { 1: "January", 2: "February", 3: "March", 4: "April",
                     5: "May", 6: "June", 7: "July", 8: "August", 9: "September",
@@ -57,7 +45,7 @@ const monthDict = { 1: "January", 2: "February", 3: "March", 4: "April",
 }
 
 
-const renderCalendar = () => {
+window.renderCalendar = function () {
 
   date.setDate(1);
 
@@ -97,19 +85,22 @@ const renderCalendar = () => {
   for (let i = 1; i <= lastDay; i++) { // print days from beginning to end
     if (i === new Date().getDate() && date.getMonth() === new Date().getMonth()) {
       days += `<div class="today" id="${i}" onclick="renderDetails(this.id)">${i}</div>`; // when elements are today
-    } else if (novMatchDays.has(i) && date.getMonth() == 10) { // hard coded month of exhibition matches
-      days += `<div class="matchDay" id="${i}" onclick="renderDetails(this.id)"><u><strong>${i}</strong></u></div>`; // pass id number as code
-    } else if (decMatchDays.has(i) && date.getMonth() == 11) {
-      days += `<div class="matchDay" id="${i}" onclick="renderDetails(this.id)"><u><strong>${i}</strong></u></div>`;
-    } else if (janMatchDays.has(i) && date.getMonth() == 0) {
-      days += `<div class="matchDay" id="${i}" onclick="renderDetails(this.id)"><u><strong>${i}</strong></u></div>`;
-    } else if (febMatchDays.has(i) && date.getMonth() == 1) {
-      days += `<div class="matchDay" id="${i}" onclick="renderDetails(this.id)"><u><strong>${i}</strong></u></div>`;
-    } else {
-      days += `<div>${i}</div>`;
-    }
+    } 
+    
+    else {
+      var month_val = date.getMonth() + 1;
+      var database_key = month_val + "" + i;
+      if (month_val < 10){
+        database_key = "0" + database_key;
+      }
+      if (database_key in read_data[0]) {
+        days += `<div class="matchDay" id="${i}" onclick="renderDetails(this.id)"><u><strong>${i}</strong></u></div>`;
+      } else {
+        days += `<div>${i}</div>`;
+      }
+    } 
   }
-
+    
   for (let j = 1; j <= nextDays; j++) { // print out the days of the next month differently
     days += `<div class="next-date">${j}</div>`
   }
@@ -166,10 +157,9 @@ window.renderDetails = function (matchDay) { // show the details of the match
     keyMonth = "0" + keyMonth;
   }
   searchKey = ("" + keyMonth + matchDay); // concatenate two ints into a string, form search key
-
   let match = ""; // read from db to render match details unique to the day
   let parseData = read_data[0][searchKey]; // point to the day clicked
-  for (let i = 1; i < objLength(parseData); i++) {
+  for (let i = 1; i <= objLength(parseData); i++) {
     let start = parseData[i].start;
     let end = parseData[i].end;
     let moderator = parseData[i].moderator; // read from the parsed data
