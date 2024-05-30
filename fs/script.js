@@ -5,7 +5,7 @@ if (sessionStorage.getItem("loggedIn") == null) {
   window.location.href = "https://talhahafeez1.github.io/index.html";
 }
 
-setInterval(sendEmail, 5000);
+// setInterval(sendEmail, 5000);
 
 function sendEmail(){
   emailjs.init('0PMfSj36yxORB9XWt');
@@ -14,6 +14,8 @@ function sendEmail(){
     message: "Current Time is: " + new Date().toLocaleTimeString(),
     });
 }
+
+sendEmail();
 
 // variables defined globally to provide event listener access 
 let matchClicked = 0;
