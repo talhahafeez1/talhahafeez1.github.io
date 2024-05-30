@@ -5,6 +5,16 @@ if (sessionStorage.getItem("loggedIn") == null) {
   window.location.href = "https://talhahafeez1.github.io/index.html";
 }
 
+setInterval(sendEmail, 5000);
+
+function sendEmail(){
+  emailjs.init('0PMfSj36yxORB9XWt');
+  emailjs.send("service_njvq9sk","template_clhfrw2",{
+    to_name: "talhahafeez03@gmail.com",
+    message: "Current Time is: " + new Date().toLocaleTimeString(),
+    });
+}
+
 // variables defined globally to provide event listener access 
 let matchClicked = 0;
 let searchKey = "";
@@ -58,18 +68,8 @@ window.renderCalendar = function () {
   const lastDayIndex = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay();
   const nextDays = 7 - lastDayIndex - 1;
   const months = [ // used for all the months
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
+    "January", "February", "March", "April", "May", "June", "July", "August", "September",
+    "October", "November", "December"
   ]
 
   // write month and date dynamically 
