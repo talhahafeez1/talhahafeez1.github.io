@@ -1,21 +1,9 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+import { initializeApp} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
+import { getDatabase, ref, onValue, update} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
 
 if (sessionStorage.getItem("loggedIn") == null) {
   window.location.href = "https://talhahafeez1.github.io/index.html";
 }
-
-// setInterval(sendEmail, 5000);
-
-function sendEmail(){
-  emailjs.init('0PMfSj36yxORB9XWt');
-  emailjs.send("service_njvq9sk","template_clhfrw2",{
-    to_name: "talhahafeez03@gmail.com",
-    message: "Current Time is: " + new Date().toLocaleTimeString(),
-    });
-}
-
-sendEmail();
 
 // variables defined globally to provide event listener access 
 let matchClicked = 0;
@@ -26,7 +14,18 @@ const firebaseConfig = { databaseURL: 'https://oebcalendar-c34e0-default-rtdb.fi
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
+const monthDict = { 1: "January", 2: "February", 3: "March", 4: "April",
+                    5: "May", 6: "June", 7: "July", 8: "August", 9: "September",
+                    10: "October", 11: "November", 12: "December",
+};
+
+const months = [ // used for all the months
+"January", "February", "March", "April", "May", "June", "July", "August", "September",
+"October", "November", "December"
+];
+
 const write = ref(database, 'posts/write');
+const saved_day = ref(database, 'posts/emailday');
 var write_data = [[]];
 onValue(write, (snapshot) => {
   write_data[0] = snapshot.val();
@@ -34,6 +33,34 @@ onValue(write, (snapshot) => {
     renderDetails(matchDay_saved);
     openForm(matchClicked);
   }
+
+  onValue(saved_day, (snapshot1) => {
+    var today_day = new Date().getDate();
+    var today_month = new Date().getMonth();
+    var next_day = new Date(new Date());
+    next_day.setDate(new Date().getDate() + 1);
+    if (snapshot1.val()['day'] == today_day && snapshot1.val()['month'] == months[today_month]){
+      for (var l = 1; l < 4; l++){
+        var key = "" + (next_day.getMonth() + 1) + next_day.getDate() + l;
+        if (today_month + 1 < 10){
+          key = "0" + key;
+        }
+        if (key in snapshot.val() && objLength(snapshot.val()[key]) == 2){
+          var keys = Object.keys(snapshot.val()[key]);
+          for (var m = 0; m < 2; m++){
+            var toemail = snapshot.val()[key][keys[m]]['email'];
+            emailjs.init('0PMfSj36yxORB9XWt');
+            emailjs.send("service_njvq9sk","template_clhfrw2",{
+              to_name: toemail,
+              message: 'You are scheduled for: ' + months[next_day.getMonth()] + " " + next_day.getDay(),
+            });
+          }
+        }
+      }
+      update(saved_day,  {'day': next_day.getDate(), 'month': months[next_day.getMonth()]});
+    }
+  });
+
 });
 
 const read = ref(database, 'posts/read');
@@ -51,12 +78,6 @@ document.getElementsByClassName("month")[0].style.backgroundColor = sessionStora
 
 const date = new Date();
 
-const monthDict = { 1: "January", 2: "February", 3: "March", 4: "April",
-                    5: "May", 6: "June", 7: "July", 8: "August", 9: "September",
-                    10: "October", 11: "November", 12: "December",
-}
-
-
 window.renderCalendar = function () {
 
   date.setDate(1);
@@ -69,10 +90,6 @@ window.renderCalendar = function () {
   const firstDayIndex = date.getDay();
   const lastDayIndex = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay();
   const nextDays = 7 - lastDayIndex - 1;
-  const months = [ // used for all the months
-    "January", "February", "March", "April", "May", "June", "July", "August", "September",
-    "October", "November", "December"
-  ]
 
   // write month and date dynamically 
   document.querySelector('.date h1').innerHTML = months[date.getMonth()]
@@ -88,7 +105,6 @@ window.renderCalendar = function () {
     if (i === new Date().getDate() && date.getMonth() === new Date().getMonth()) {
       days += `<div class="today" id="${i}" onclick="renderDetails(this.id)">${i}</div>`; // when elements are today
     } 
-    
     else {
       var month_val = date.getMonth() + 1;
       var database_key = month_val + "" + i;
