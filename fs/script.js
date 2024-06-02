@@ -1,8 +1,12 @@
 import { initializeApp} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
 import { getDatabase, ref, onValue, update} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
 
-if (sessionStorage.getItem("loggedIn") == null) {
-  window.location.href = "https://talhahafeez1.github.io/index.html";
+if (sessionStorage.getItem("loggedIn") == null || sessionStorage.getItem("loggedIn") == "false") {
+  window.location.href = "./index.html";
+}
+
+if (sessionStorage.getItem("User") == "admin"){
+  document.getElementsByClassName("adminNavBar")[0].style.display = "block";
 }
 
 // variables defined globally to provide event listener access 
@@ -33,6 +37,8 @@ onValue(write, (snapshot) => {
     renderDetails(matchDay_saved);
     openForm(matchClicked);
   }
+
+  get_player_matches(snapshot.val());
 
   onValue(saved_day, (snapshot1) => {
     var today_day = new Date().getDate();
@@ -68,6 +74,7 @@ var read_data = [[]];
 onValue(read, (snapshot) => {
   read_data[0] = snapshot.val();
   renderCalendar();
+  get_match_info(snapshot.val());
   if (matchClicked != 0 && searchKey != "" && matchDay_saved != null){
     renderDetails(matchDay_saved);
     openForm(matchClicked);
@@ -243,4 +250,92 @@ function objLength(obj) {
   }
 
   return count;
+}
+
+function get_player_matches(matches){
+  // var email = sessionStorage.getItem("User");
+  var team = sessionStorage.getItem("Team");
+  var user_matches = [];
+  for (var i = 0; i < objLength(matches); i++){
+    var matches_on_day = matches[Object.keys(matches)[i]];
+    for (var j = 0; j < objLength(matches_on_day); j++){
+      var teams_on_day = matches_on_day[Object.keys(matches_on_day)[j]];
+      if (team == teams_on_day['team']){
+        user_matches.push(Object.keys(matches)[i]);
+      }
+    }
+  }
+  
+  document.querySelector(".userMatches").innerHTML = `<h2>Team ${team}'s Applied Matches</h2>`;
+
+  // To make the collapsing buttons info
+  for (var l = 0; l < objLength(user_matches); l++){
+     var match = user_matches[l];
+     var month = monthDict[parseInt("" + match[0] + match[1])];
+     var day;
+     var match_on_day;
+     if (match.length > 4){
+      day = match[2] + match[3];
+      match_on_day = match[4];
+     } else {
+      day = match[2];
+      match_on_day = match[3];
+     }
+     var new_button = document.createElement("button");
+     new_button.classList.add("collapsible");
+     new_button.innerText = "" + month + ", " + day + ": " + "Match " + match_on_day; 
+     document.getElementsByClassName("userMatchDetails")[0].appendChild(new_button);
+  }
+
+  sessionStorage.setItem("UserMatches", JSON.stringify(user_matches));
+
+}
+
+function get_match_info(match_info) {
+  var user_matches = JSON.parse(sessionStorage.getItem("UserMatches"));
+  for (var l = 0; l < objLength(user_matches); l++){
+    var match = user_matches[l];
+    var month = "" + match[0] + match[1];
+    var day;
+    var match_on_day;
+    if (match.length > 4){
+     day = "" + match[2] + match[3];
+     match_on_day = match[4];
+    } else {
+     day = match[2];
+     match_on_day = match[3];
+    }
+    // console.log(month + day);
+    if (match_info[month + day] != null){
+      if (match_info[month + day][match_on_day] != null){
+        var new_div = document.createElement('div');
+        var start_time = document.createElement('p');
+        var end_time = document.createElement('p');
+        var moderator = document.createElement('p');
+        start_time.innerText = "Start Time: " + match_info[month + day][match_on_day]['start'];
+        end_time.innerText = "End Time: " + match_info[month + day][match_on_day]['end'];
+        moderator.innerText = "Moderator: " + match_info[month + day][match_on_day]['moderator'];
+        new_div.appendChild(start_time);
+        new_div.appendChild(end_time);
+        new_div.appendChild(moderator);
+        new_div.classList.add("match");
+        var corresponding_button = document.getElementsByClassName("collapsible")[l];
+        corresponding_button.after(new_div);
+      }
+    }
+  }
+  // To make the collapsing buttons actually collapse and close
+  var coll = document.getElementsByClassName("collapsible");
+
+  for (var i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.maxHeight){
+        content.style.maxHeight = null;
+      } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+      }
+    });
+  }
 }

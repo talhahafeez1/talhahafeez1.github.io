@@ -9,7 +9,6 @@ html {
   font-size: 62.5%;
 }
 
-
 .container{
   width: 100%;
   height: 100vh;
@@ -18,6 +17,7 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .login_container, .register_container{
@@ -32,7 +32,7 @@ html {
 
 .calendar {
   width: 45rem;
-  height: 52rem;
+  height: 55rem;
   background-color: #222227;
   box-shadow: 0 0.5rem 3rem rgba(0, 0, 0, 0.4);
 }
@@ -124,21 +124,21 @@ html {
   background-color: #e1b563;
 }
 
-.sideBar {
+.sideBar, .sideBar2 {
   width: 30rem;
-  height: 52rem;
+  height: 55rem;
   background-color: #2a2a30;
   box-shadow: 0 0.5rem 3rem rgba(0, 0, 0, 0.4);
   position: relative;
 }
 
-.matchDetails {
+.matchDetails, .userMatchDetails {
   height: 30%;
   width: 100%;
   margin: 0px 10px 0px 0px;
 }
 
-.matchDetails p:hover {
+.matchDetails p:hover, .userMatchDetails  p:hover {
   background-color: rgb(111, 119, 119);
 }
 
@@ -173,7 +173,7 @@ html {
 }
 
 /*Used to format instructions before selecting a match*/
-.matchDetails h1 {
+.matchDetails h1, .userMatchDetails h1 {
   text-align: center;
   padding-top: 70%;
 }
@@ -275,9 +275,14 @@ html {
   z-index: 1;
 }
 
-.dayClicked {
+.dayClicked, .userMatches {
   text-align: center;
   padding: 10px;
+}
+
+.sideBar2 {
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 
@@ -368,4 +373,74 @@ input[type=password]:focus, .register_form input[type=text]:focus, input[type=pa
 #popUp .btn:hover,
 .open-button:hover {
   opacity: 1;
+}
+
+
+
+.collapsible, .changeButton {
+  background-color: #2a2a30;;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: 2px;
+  border-color: black;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: #ccc;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.match, .userInfo{
+  padding: 0 18px;
+  background-color: #2a2a30;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.collapsible:after {
+  content: '\02795'; /* Unicode character for "plus" sign (+) */
+  font-size: 13px;
+  color: white;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+.match p, .userInfo p {
+  font-size: 12px;
+}
+
+.adminNavBar {
+  display: none;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  background-color: #262626;
+}
+
+.adminNavBar a {
+  font-size: 1.5em;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+}
+
+.adminNavBar a:hover {
+  opacity: 1;
+}
+
+
+.allUsers {
+  width: 50%;
 }

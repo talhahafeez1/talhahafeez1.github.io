@@ -25,7 +25,8 @@ window.loginUser = function (){
             if (saved_data['admin']){
                 sessionStorage.setItem("col", "red");
             }
-
+            sessionStorage.setItem("User", username);
+            sessionStorage.setItem("Team", saved_data['team']);
             sessionStorage.setItem("loggedIn", "True");
             // window.location.href = "https://talhahafeez1.github.io/calendar.html";
             window.location.href = "./calendar.html";
