@@ -253,20 +253,20 @@ function objLength(obj) {
 }
 
 function get_player_matches(matches){
-  // var email = sessionStorage.getItem("User");
-  var team = sessionStorage.getItem("Team");
+  var email = sessionStorage.getItem("User");
+  // var team = sessionStorage.getItem("Team");
   var user_matches = [];
   for (var i = 0; i < objLength(matches); i++){
     var matches_on_day = matches[Object.keys(matches)[i]];
     for (var j = 0; j < objLength(matches_on_day); j++){
       var teams_on_day = matches_on_day[Object.keys(matches_on_day)[j]];
-      if (team == teams_on_day['team']){
+      if (email == teams_on_day['email']){
         user_matches.push(Object.keys(matches)[i]);
       }
     }
   }
   
-  document.querySelector(".userMatches").innerHTML = `<h2>Team ${team}'s Applied Matches</h2>`;
+  document.querySelector(".userMatches").innerHTML = `<h2>User ${email}'s Applied Matches</h2>`;
 
   // To make the collapsing buttons info
   for (var l = 0; l < objLength(user_matches); l++){
