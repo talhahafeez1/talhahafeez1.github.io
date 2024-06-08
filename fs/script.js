@@ -33,9 +33,11 @@ const saved_day = ref(database, 'posts/emailday');
 var write_data = [[]];
 onValue(write, (snapshot) => {
   write_data[0] = snapshot.val();
-  if (matchClicked != 0 && searchKey != "" && matchDay_saved != null){
-    renderDetails(matchDay_saved);
+  if (matchClicked != 0 && searchKey != ""){
     openForm(matchClicked);
+  }
+  if (searchKey != "" && matchDay_saved != null) {
+    renderDetails(matchDay_saved);
   }
 
   get_player_matches(snapshot.val());
@@ -75,9 +77,12 @@ onValue(read, (snapshot) => {
   read_data[0] = snapshot.val();
   renderCalendar();
   get_match_info(snapshot.val());
-  if (matchClicked != 0 && searchKey != "" && matchDay_saved != null){
-    renderDetails(matchDay_saved);
+
+  if (matchClicked != 0 && searchKey != ""){
     openForm(matchClicked);
+  }
+  if (searchKey != "" && matchDay_saved != null) {
+    renderDetails(matchDay_saved);
   }
 });
 
