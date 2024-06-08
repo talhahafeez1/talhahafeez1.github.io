@@ -190,6 +190,7 @@ window.renderDetails = function (matchDay) { // show the details of the match
   let match = ""; // read from db to render match details unique to the day
   let parseData = read_data[0][searchKey]; // point to the day clicked
   for (let i = 1; i <= objLength(parseData); i++) {
+    console.log(parseData[i]);
     let start = parseData[i].start;
     let end = parseData[i].end;
     let moderator = parseData[i].moderator; // read from the parsed data
