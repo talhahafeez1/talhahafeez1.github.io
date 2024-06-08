@@ -443,6 +443,12 @@ input[type=password]:focus, .register_form input[type=text]:focus, input[type=pa
   opacity: 1;
 }
 
+#uploadfileInfo
+{
+    height: 100%;
+    width: 100%;
+    font-size:14pt;
+}
 
 .allUsers {
   width: 50%;

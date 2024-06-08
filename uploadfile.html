@@ -8,14 +8,18 @@
 
     <body>
         <div class="uploadfileContainer">
+            
             <div class="uploadfile_form" id="submit_fileForm">
-                <form method="post" enctype="multipart/form-data" id="uploadfile_form">
-                    <input type="file" name="file" class="btn chooseFile">
-                    <button class="btn uploadfile">Upload</button>
-                </form>
+                <nav class="adminNavBar">
+                    <a href="./calendar.html">Home</a>
+                    <a href="./users.html">Users</a>
+                    <a href="./uploadfile.html">Upload File</a>
+                </nav>
+                <textarea name="uploadfileInfo" id="uploadfileInfo" rows="20" cols="25"></textarea>
+                <button class="btn uploadfile" onClick="uploadData()">Upload</button>
             </div>
         </div>
         
-        <script type="module" src="./fs/login.js"></script>
+        <script type="module" src="./fs/uploadFile.js"></script>
     </body>
 </html>

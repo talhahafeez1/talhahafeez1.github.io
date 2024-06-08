@@ -336,18 +336,3 @@ function get_match_info(match_info) {
     });
   }
 }
-
-
-const upload_form = document.querySelector("uploadfile_form");
-upload_form.addEventListener('submit', handleUploadFileSubmit);
-
-function handleUploadFileSubmit(event) {
-  
-  const upload_form_target = event.currentTarget;
-  const url = new URL(upload_form_target.action);
-
-  fetch(url);
-  console.log(url);
-
-  event.preventDefault();
-}
