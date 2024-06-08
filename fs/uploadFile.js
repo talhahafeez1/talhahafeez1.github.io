@@ -92,7 +92,7 @@ function addMatch(database_key, match_info){
                 }
             }
         }
-        
+        console.log('posts/read/' + database_key + '/' + new_match_num);
         set(ref(database, 'posts/read/' + database_key + '/' + new_match_num), {
             start: match_info[1],
             end: match_info[2],
