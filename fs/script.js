@@ -286,9 +286,7 @@ function get_player_matches(matches){
      new_button.innerText = "" + month + ", " + day + ": " + "Match " + match_on_day; 
      document.getElementsByClassName("userMatchDetails")[0].appendChild(new_button);
   }
-
   sessionStorage.setItem("UserMatches", JSON.stringify(user_matches));
-
 }
 
 function get_match_info(match_info) {
@@ -305,7 +303,6 @@ function get_match_info(match_info) {
      day = match[2];
      match_on_day = match[3];
     }
-    // console.log(month + day);
     if (match_info[month + day] != null){
       if (match_info[month + day][match_on_day] != null){
         var new_div = document.createElement('div');
@@ -338,4 +335,19 @@ function get_match_info(match_info) {
       }
     });
   }
+}
+
+
+const upload_form = document.querySelector("uploadfile_form");
+upload_form.addEventListener('submit', handleUploadFileSubmit);
+
+function handleUploadFileSubmit(event) {
+  
+  const upload_form_target = event.currentTarget;
+  const url = new URL(upload_form_target.action);
+
+  fetch(url);
+  console.log(url);
+
+  event.preventDefault();
 }

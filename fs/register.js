@@ -1,5 +1,4 @@
 function login() {
-    // window.location.href = "https://talhahafeez1.github.io/index.html";
     window.location.href = "./index.html";
 }
 
@@ -35,7 +34,6 @@ function createUser() {
             body: JSON.stringify({"pass": password, "team": team, "admin": false}) // actual content being written to db from form submission
         });
 
-        // window.location.href = "https://talhahafeez1.github.io/index.html";
         window.location.href = "./index.html";
     });
 }
