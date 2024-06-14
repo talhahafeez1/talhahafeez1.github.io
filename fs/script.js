@@ -196,7 +196,7 @@ window.renderDetails = function (matchDay) { // show the details of the match
     let moderator = parseData[i].moderator; // read from the parsed data
     let writeParse = write_data[0][searchKey + i]; // point to the day clicked
     if (objLength(writeParse) == 0) {
-    match += `<p class="option1" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
+      match += `<p class="option1" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
     } else if (objLength(writeParse) == 1) {
       match += `<p class="option2" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
     } else if (objLength(writeParse) == 2) {

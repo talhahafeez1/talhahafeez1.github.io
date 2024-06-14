@@ -8,6 +8,8 @@ if (sessionStorage.getItem("loggedIn") == null || sessionStorage.getItem("logged
 
 if (sessionStorage.getItem("User") == "admin"){
     document.getElementsByClassName("adminNavBar")[0].style.display = "block";
+} else {
+    window.location.href = "./index.html";
 }
 
 const firebaseConfig = { databaseURL: 'https://oebcalendar-c34e0-default-rtdb.firebaseio.com' };
@@ -31,8 +33,41 @@ var months = {"January": "01", "February": "02", "March": "03", "April": "04", "
               "December": "12"
 };
 
-window.uploadData = function () {
-    var all_matches = document.getElementById("uploadfileInfo").value.split(/\n/);
+function uploadFile () {}
+
+uploadFile.prototype.getCsv = function(e) {
+    let input = document.getElementById("uploadedFile");
+    var file;
+    input.addEventListener('change', function () {
+        file = this.files;
+    });
+
+    let submitBtn = document.getElementById('uploadfile');
+    
+    submitBtn.addEventListener('click', function() {
+        if (file && file[0]) {
+            var myFile = file[0];
+            var reader = new FileReader();
+            reader.addEventListener('load', function (e) {
+                let csvdata = e.target.result;
+                parseCsv.getParsecsvdata(csvdata);
+            });
+            reader.readAsBinaryString(myFile);
+        }
+    });
+}
+
+uploadFile.prototype.getParsecsvdata = function (data) {
+let parsedData = data.split('\n');
+    uploadData(parsedData);
+}
+    
+var parseCsv = new uploadFile();
+parseCsv.getCsv();
+
+window.uploadData = function (data) {
+    var all_matches = data;
+    // var all_matches = document.getElementById("uploadfileInfo").value;
     for (var i = 0; i < objLength(all_matches); i++){
         var match_info = all_matches[i].split(/,/);
         var date = match_info[0].split(/ /);
