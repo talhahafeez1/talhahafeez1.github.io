@@ -25,7 +25,6 @@ function createUser() {
             }
         }
 
-        //generates its own unique key in the form of month, day, match number (1 to n)
         await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/users/' + username + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
             method: 'POST',
             headers: {

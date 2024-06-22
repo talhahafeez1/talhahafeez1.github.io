@@ -1,5 +1,5 @@
 import { initializeApp} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getDatabase, ref, onValue, update} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+import { getDatabase, ref, onValue, update, set, remove} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
 
 if (sessionStorage.getItem("loggedIn") == null || sessionStorage.getItem("loggedIn") == "false") {
   window.location.href = "./index.html";
@@ -86,6 +86,16 @@ onValue(read, (snapshot) => {
   }
 });
 
+const all_cases = ref(database, 'posts/cases');
+var cases_data = [[]];
+onValue(all_cases, (snapshot) => {
+  cases_data[0] = snapshot.val();
+  renderCalendar();
+  if (matchClicked != 0 && searchKey != ""){
+    openForm(matchClicked);
+  }
+});
+
 document.getElementsByClassName("month")[0].style.backgroundColor = sessionStorage.getItem("col");
 
 const date = new Date();
@@ -126,7 +136,7 @@ window.renderCalendar = function () {
       if (database_key in read_data[0]) {
         days += `<div class="matchDay" id="${i}" onclick="renderDetails(this.id)"><u><strong>${i}</strong></u></div>`;
       } else {
-        days += `<div>${i}</div>`;
+        days += `<div class="matchDay" id="${i}" onclick="renderDetails(this.id)">${i}</div>`;
       }
     } 
   }
@@ -138,7 +148,7 @@ window.renderCalendar = function () {
 }
 
 // dom event listener for form
-const formEL = document.querySelector('.form');
+const formEL = document.getElementById("submitForm");
 
 // open form 
 window.openForm = function (finalClick) {
@@ -166,12 +176,29 @@ window.openForm = function (finalClick) {
     }
   }
   if (teamDetails != "") document.getElementById("formTop").innerHTML = teamDetails; // append and write html
+
+  document.getElementById("inputEmail").value = sessionStorage.getItem("User");
+  var cases_select = document.getElementById("all_cases");
+  cases_select.innerHTML = "";
+  for (var i = 0; i < objLength(cases_data[0]); i++){
+    var key = Object.keys(cases_data[0])[i];
+    var the_case = cases_data[0][key]['Case'];
+    var new_opt = document.createElement("option");
+    new_opt.value = the_case;
+    new_opt.text = the_case;
+    cases_select.add(new_opt, null);
+  }
+
 }
 
 // close form 
 window.clearForm = function () {
   document.getElementById("myForm").style.display = "none"; // hide pop up form
+  document.getElementById("addMatchForm").style.display = "none";
+  document.getElementById("editMatchForm").style.display = "none";
   document.getElementById("submitForm").reset(); // empty the fields
+  document.getElementById("submitMatchForm").reset(); // empty the fields
+  document.getElementById("submiteditMatchForm").reset(); // empty the fields
   document.getElementById("formTop").innerHTML = "<div class='formTeam'><h3>Team 1</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br></div><div class='formTeam'><h3>Team 2</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br></div>"
 }
 
@@ -189,20 +216,33 @@ window.renderDetails = function (matchDay) { // show the details of the match
   searchKey = ("" + keyMonth + matchDay); // concatenate two ints into a string, form search key
   let match = ""; // read from db to render match details unique to the day
   let parseData = read_data[0][searchKey]; // point to the day clicked
-  console.log(parseData);
-  for (let i = 1; i <= objLength(parseData); i++) {
-    let start = parseData[i].start;
-    let end = parseData[i].end;
-    let moderator = parseData[i].moderator; // read from the parsed data
-    let writeParse = write_data[0][searchKey + i]; // point to the day clicked
+  if (parseData == null){
+    parseData = 0;
+  }
+  for (let i = 0; i < objLength(Object.keys(parseData)); i++) {
+    var match_num = Object.keys(parseData)[i]; 
+    let start = parseData[match_num].start;
+    let end = parseData[match_num].end;
+    let moderator = parseData[match_num].moderator; // read from the parsed data
+    let writeParse = write_data[0][searchKey + match_num]; // point to the day clicked
+    var del_button = "";
+    var edit_button = "";
+    if (sessionStorage.getItem("User") == 'admin'){
+      del_button = `<button class="delmatchbutton" id="match${match_num}" onClick="delMatch('${searchKey}', ${match_num})"><i class="material-icons" style="font-size:16px">delete</i></button>`
+      edit_button = `<button class="editmatchinfobutton" onClick="editMatchInfo('${searchKey}', ${match_num})"><i class="fa fa-pencil" style="font-size:16px"></i></button>`
+    }
     if (objLength(writeParse) == 0) {
-      match += `<p class="option1" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
+      match += `<div class="matchDiv"><p class="option1" onclick="openForm(this.id)" id="${match_num}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>` + del_button + edit_button + `</div>`
     } else if (objLength(writeParse) == 1) {
-      match += `<p class="option2" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
+      match += `<div class="matchDiv"><p class="option2" onclick="openForm(this.id)" id="${match_num}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>` + del_button + edit_button + `</div>`
     } else if (objLength(writeParse) == 2) {
-      match += `<p class="option3" onclick="openForm(this.id)" id="${i}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>`
+      match += `<div class="matchDiv"><p class="option3" onclick="openForm(this.id)" id="${match_num}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>` + del_button + edit_button + `</div>`
     }
   }
+  if (objLength(parseData) < 3 && sessionStorage.getItem("User") == "admin"){
+    match += `<button type="button" class="block" onClick="openAddMatchForm()">Add Match</button>`;
+  }
+
   matchDetails.innerHTML = match;
 }
 
@@ -259,6 +299,7 @@ function objLength(obj) {
 }
 
 function get_player_matches(matches){
+  document.getElementsByClassName("userMatchDetails")[0].innerHTML = "";
   var email = sessionStorage.getItem("User");
   // var team = sessionStorage.getItem("Team");
   var user_matches = [];
@@ -271,7 +312,7 @@ function get_player_matches(matches){
       }
     }
   }
-  
+
   document.querySelector(".userMatches").innerHTML = `<h2>User ${email}'s Applied Matches</h2>`;
 
   // To make the collapsing buttons info
@@ -293,6 +334,7 @@ function get_player_matches(matches){
      document.getElementsByClassName("userMatchDetails")[0].appendChild(new_button);
   }
   sessionStorage.setItem("UserMatches", JSON.stringify(user_matches));
+
 }
 
 function get_match_info(match_info) {
@@ -342,3 +384,71 @@ function get_match_info(match_info) {
     });
   }
 }
+
+window.openAddMatchForm = function (finalClick) {
+  document.getElementById("addMatchForm").style.display = "block";
+}
+
+var matchForm = document.getElementById("submitMatchForm");
+matchForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const formData = new FormData(matchForm);
+  const data = Object.fromEntries(formData); // generate the data from the form
+  let parseData = "";
+  parseData = read_data[0][searchKey]; // point to the day clicked
+  var match_num = objLength(parseData) + 1;
+  if (match_num == 1) {
+    set(ref(database, 'posts/read/' + searchKey), true);
+  }
+
+  for (var i = 1; i < 4; i++){
+    if (read_data[0][searchKey] == null || Object.keys(read_data[0][searchKey]).indexOf('' + i) === -1){
+      update(ref(database, 'posts/read/' + searchKey), {
+        [i]: data
+      });
+      break;
+    }
+    
+  }
+  
+  clearForm(); // close and clear the form after submission successful 
+});
+
+window.delMatch = function (key, match_num) {
+  if (confirm("Are you sure you want to delete this match?")){
+    remove(ref(database, 'posts/read/' + key + '/' + match_num));
+    remove(ref(database, 'posts/write/' + key + match_num));
+  }
+}
+
+var editing_key = "";
+var editing_match_num = "";
+window.editMatchInfo = function (key, match_num) {
+  document.getElementById("editMatchForm").style.display = "block";
+  editing_key = key;
+  editing_match_num = match_num;
+}
+
+var editForm = document.getElementById("submiteditMatchForm");
+editForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const formData = new FormData(editForm);
+  const data = Object.fromEntries(formData); // generate the data from the form
+  let parseData = "";
+  parseData = read_data[0][editing_key]; // point to the day clicked
+  if (data['start'] == '') {
+    data['start'] = read_data[0][editing_key][editing_match_num]['start'];  
+  }
+  if (data['end'] == '') {
+    data['end'] = read_data[0][editing_key][editing_match_num]['end'];  
+  }
+  if (data['moderator'] == '') {
+    data['moderator'] = read_data[0][editing_key][editing_match_num]['moderator'];  
+  }
+
+  update(ref(database, 'posts/read/' + editing_key), {
+    [editing_match_num]: data
+  });
+
+  clearForm(); // close and clear the form after submission successful 
+});

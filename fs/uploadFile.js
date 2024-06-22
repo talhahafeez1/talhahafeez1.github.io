@@ -1,6 +1,6 @@
 
 import { initializeApp} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getDatabase, ref, onValue, remove, set} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+import { getDatabase, ref, onValue, remove, set, update} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
 
 if (sessionStorage.getItem("loggedIn") == null || sessionStorage.getItem("loggedIn") == "false") {
   window.location.href = "./index.html";
@@ -22,6 +22,13 @@ onValue(read, (snapshot) => {
   read_data[0] = snapshot.val();
 });
 
+const cases = ref(database, 'posts/cases');
+var cases_data = [[]];
+onValue(cases, (snapshot) => {
+    cases_data[0] = snapshot.val();
+});
+
+
 const write = ref(database, 'posts/write');
 var write_data = [[]];
 onValue(write, (snapshot) => {
@@ -35,15 +42,37 @@ var months = {"January": "01", "February": "02", "March": "03", "April": "04", "
 
 function uploadFile () {}
 
+function uploadcaseFile () {}
+
+uploadcaseFile.prototype.getCsv = function(e) {
+    var input = document.getElementById("caseFile");
+    var file;
+    input.addEventListener('change', function () {
+        file = this.files;
+    });
+
+    let submitBtn = document.getElementById('uploadcasefile');
+    submitBtn.addEventListener('click', function() {
+        if (file && file[0]) {
+            var myFile = file[0];
+            var reader = new FileReader();
+            reader.addEventListener('load', function (e) {
+                let csvdata = e.target.result;
+                parseCsv1.getParsecsvdata(csvdata);
+            });
+            reader.readAsBinaryString(myFile);
+        }
+    });
+}
+
 uploadFile.prototype.getCsv = function(e) {
-    let input = document.getElementById("uploadedFile");
+    var input = document.getElementById("uploadedFile");
     var file;
     input.addEventListener('change', function () {
         file = this.files;
     });
 
     let submitBtn = document.getElementById('uploadfile');
-    
     submitBtn.addEventListener('click', function() {
         if (file && file[0]) {
             var myFile = file[0];
@@ -56,14 +85,38 @@ uploadFile.prototype.getCsv = function(e) {
         }
     });
 }
-
 uploadFile.prototype.getParsecsvdata = function (data) {
 let parsedData = data.split('\n');
     uploadData(parsedData);
 }
-    
+
+uploadcaseFile.prototype.getParsecsvdata = function (data) {
+    let parsedData = data.split('\n');
+    uploadCases(parsedData);
+}
+
 var parseCsv = new uploadFile();
 parseCsv.getCsv();
+
+var parseCsv1 = new uploadcaseFile();
+parseCsv1.getCsv();
+
+window.uploadCases = function (data) {
+    remove(ref(database, 'posts/cases'));
+    fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
+    .then(res => res.json())
+    .then(async readData => {
+        for (var i = 0; i < objLength(data); i++){
+            await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/cases.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"Case": data[i]}) // actual content being written to db from form submission
+            });
+        }
+    });
+}
 
 window.uploadData = function (data) {
     var all_matches = data;
@@ -127,12 +180,11 @@ function addMatch(database_key, match_info){
                 }
             }
         }
-        console.log('posts/read/' + database_key + '/' + new_match_num);
         set(ref(database, 'posts/read/' + database_key + '/' + new_match_num), {
             start: match_info[1],
             end: match_info[2],
             moderator: match_info[3]
-        })
+        });
     }
 }
 

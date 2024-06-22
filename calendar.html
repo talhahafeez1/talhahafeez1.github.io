@@ -6,6 +6,8 @@
 
   <link rel="stylesheet" href="fs/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link  rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 </head>
@@ -92,11 +94,53 @@
           </label>
 
           <label name="email"><b>Email</b>
-            <input id="inputEmail" name="email" type="text" placeholder="Enter Email" value="" required>
+            <input id="inputEmail" name="email" type="text" placeholder="Enter Email" value="" readonly>
           </label>
 
-          <label name="cases"><b>Pick a Case</b>
-            <input id="inputCase" name="case" type="text" placeholder="Case Name" value="" required>
+          <label for="case" name="cases"><b>Pick a Case</b>
+          <select name="case" id="all_cases">
+          </select>
+          
+            <!-- <input id="inputCase" name="case" type="text" placeholder="Case Name" value="" required> -->
+          </label>
+          <button type="submit" class="btn submit">Save</button>
+          <button type="button" class="btn cancel" onclick="clearForm()">Cancel</button>
+        </form>
+      </div>
+
+      <div class="formContainer" id="addMatchForm" autocomplete="off">
+        <form class="form" id="submitMatchForm">
+          <h2 id="title">Add New Match</h2>
+          <label name="start"><b>Start Time</b>
+            <input id="inputstartTime" name="start" type="text" placeholder="Enter Start Time" value="" required>
+          </label>
+
+          <label name="end"><b>End Time</b>
+            <input id="inputendTime" name="end" type="text" placeholder="Enter End Time" value="" required>
+          </label>
+
+          <label name="moderator"><b>Moderator</b>
+            <input id="inputModerator" name="moderator" type="text" placeholder="Enter Moderator" value="" required>
+          </label>
+
+          <button type="submit" class="btn submit">Save</button>
+          <button type="button" class="btn cancel" onclick="clearForm()">Cancel</button>
+        </form>
+      </div>
+
+      <div class="formContainer" id="editMatchForm" autocomplete="off">
+        <form class="form" id="submiteditMatchForm">
+          <h2 id="title">Edit Match Info</h2>
+          <label name="start"><b>Start Time</b>
+            <input id="inputstartTime" name="start" type="text" placeholder="Enter New Start Time" value="">
+          </label>
+
+          <label name="end"><b>End Time</b>
+            <input id="inputendTime" name="end" type="text" placeholder="Enter New End Time" value="">
+          </label>
+
+          <label name="moderator"><b>Moderator</b>
+            <input id="inputModerator" name="moderator" type="text" placeholder="Enter New Moderator" value="">
           </label>
 
           <button type="submit" class="btn submit">Save</button>

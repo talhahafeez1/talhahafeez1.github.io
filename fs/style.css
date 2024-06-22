@@ -271,7 +271,7 @@ html {
   top: 0;
   left: 0;
   margin: auto;
-  border: 3px solid #f1f1f1;
+  /* border: 3px solid #f1f1f1; */
   z-index: 1;
 }
 
@@ -538,4 +538,40 @@ input[type="file"]::file-selector-button:active {
 
 .btn uploadfile {
   padding: 2px;
+}
+
+.block {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: #252529;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  color: white;
+}
+
+.matchDiv {
+  position: relative;
+}
+
+.delmatchbutton, .editmatchinfobutton {
+  font-size: 8pt;
+  margin-top: 1px;
+  margin-right: 2px;
+  position: absolute;
+  top: 7px;
+  right: 9px;
+}
+
+.delmatchbutton i, .editmatchinfobutton i {
+  text-align: center;
+  padding: 0;
+  margin: 1px;
+}
+
+.editmatchinfobutton {
+  width: 22px;
+  right: 34px;
 }
