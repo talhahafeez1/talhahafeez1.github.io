@@ -124,6 +124,10 @@ html {
   background-color: #e1b563;
 }
 
+.matchDayNoMatches {
+  background-color: #262626;
+}
+
 .sideBar, .sideBar2 {
   width: 30rem;
   height: 55rem;
@@ -258,6 +262,10 @@ html {
   margin-bottom: 20px;
   border: 2px solid black;
   font-size: 12px;
+}
+
+.formTeam {
+  position: relative;
 }
 
 /* The popup form - hidden by default */

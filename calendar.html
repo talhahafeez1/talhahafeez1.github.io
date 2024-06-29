@@ -148,6 +148,26 @@
         </form>
       </div>
 
+      <div class="formContainer" id="editTeamForm" autocomplete="off">
+        <form class="form" id="submiteditTeamForm">
+          <h2 id="title">Edit Team Info</h2>
+          <label name="team"><b>Team</b>
+            <input id="inputteam" name="team" type="text" placeholder="Enter New Team" value="">
+          </label>
+
+          <label name="email"><b>Email</b>
+            <input id="inputEmail1" name="email" type="text" placeholder="" value="" readonly>
+          </label>
+
+          <label for="case" name="cases"><b>Pick a New Case</b>
+            <select name="case" id="all_cases1">
+            </select>
+
+          <button type="submit" class="btn submit">Save</button>
+          <button type="button" class="btn cancel" onclick="clearEditForm()">Cancel</button>
+        </form>
+      </div>
+
 
       <div id="popUp">
         <h1>Error booking match</h1>

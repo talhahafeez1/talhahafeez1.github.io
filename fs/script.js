@@ -31,6 +31,8 @@ const months = [ // used for all the months
 const write = ref(database, 'posts/write');
 const saved_day = ref(database, 'posts/emailday');
 var write_data = [[]];
+const read = ref(database, 'posts/read');
+var read_data = [[]];
 onValue(write, (snapshot) => {
   write_data[0] = snapshot.val();
   if (matchClicked != 0 && searchKey != ""){
@@ -41,7 +43,7 @@ onValue(write, (snapshot) => {
   }
 
   get_player_matches(snapshot.val());
-
+  
   onValue(saved_day, (snapshot1) => {
     var today_day = new Date().getDate();
     var today_month = new Date().getMonth();
@@ -71,13 +73,10 @@ onValue(write, (snapshot) => {
 
 });
 
-const read = ref(database, 'posts/read');
-var read_data = [[]];
 onValue(read, (snapshot) => {
   read_data[0] = snapshot.val();
   renderCalendar();
-  get_match_info(snapshot.val());
-
+  get_player_matches(write_data[0]);
   if (matchClicked != 0 && searchKey != ""){
     openForm(matchClicked);
   }
@@ -136,7 +135,12 @@ window.renderCalendar = function () {
       if (database_key in read_data[0]) {
         days += `<div class="matchDay" id="${i}" onclick="renderDetails(this.id)"><u><strong>${i}</strong></u></div>`;
       } else {
-        days += `<div class="matchDay" id="${i}" onclick="renderDetails(this.id)">${i}</div>`;
+        if (sessionStorage.getItem("User") == "admin"){
+          days += `<div class="matchDayNoMatches" id="${i}" onclick="renderDetails(this.id)">${i}</div>`;
+        } else {
+          days += `<div>${i}</div>`;
+        }
+        
       }
     } 
   }
@@ -167,14 +171,26 @@ window.openForm = function (finalClick) {
     let teamName = parseData[elem].team; // define data pulled from json
     let teamEmail = parseData[elem].email;
     let teamCase = parseData[elem].case;
-
-    teamDetails += `<div class='formTeam'> <h3>Team ${loopCount}</h3>  <b> Team: </b> ${teamName}</br> <b> Email: </b> ${teamEmail}</br> <b> Case: </b> ${teamCase}</br> </div>`;
+    var del_button = "";
+    var edit_button = "";
+    if (sessionStorage.getItem("User") == teamEmail || sessionStorage.getItem("User") == "admin"){
+      del_button = `<button class="delmatchbutton" onClick="delTeam('${searchKey + matchClicked}', ${loopCount})"><i class="material-icons" style="font-size:16px">delete</i></button>`
+      edit_button = `<button class="editmatchinfobutton" onClick="editTeamInfo('${searchKey + matchClicked}', ${loopCount})"><i class="fa fa-pencil" style="font-size:16px"></i></button>`
+    }
+   
+    teamDetails += `<div class='formTeam'> <h3>Team ${loopCount}</h3>  <b> Team: </b> ${teamName}</br> <b> Email: </b> ${teamEmail}</br> <b> Case: </b> ${teamCase}</br>` + del_button + edit_button + `</div>`;
     loopCount++;
 
     if (objLength(parseData) == 1) {
-      teamDetails += `<div class='formTeam'> <h3>Team ${loopCount}</h3>  <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br> </div>`;
+      teamDetails += `<div class='formTeam'> <h3>Team ${loopCount}</h3>  <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br></div>`;
     }
   }
+
+  if (objLength(parseData) == 0){
+    teamDetails += `<div class='formTeam'><h3>Team 1</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br></div>
+                    <div class='formTeam'><h3>Team 2</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br></div>`
+  }
+
   if (teamDetails != "") document.getElementById("formTop").innerHTML = teamDetails; // append and write html
 
   document.getElementById("inputEmail").value = sessionStorage.getItem("User");
@@ -200,6 +216,12 @@ window.clearForm = function () {
   document.getElementById("submitMatchForm").reset(); // empty the fields
   document.getElementById("submiteditMatchForm").reset(); // empty the fields
   document.getElementById("formTop").innerHTML = "<div class='formTeam'><h3>Team 1</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br></div><div class='formTeam'><h3>Team 2</h3> <b> Team: </b> TBA</br> <b> Email: </b> TBA </br> <b> Case: </b> TBA</br></div>"
+}
+
+window.clearEditForm = function (){
+  document.getElementById("myForm").style.display = "block"; // hide pop up form
+  document.getElementById("editTeamForm").style.display = "none";
+  document.getElementById("submiteditTeamForm").reset(); // empty the fields
 }
 
 // render the match details 
@@ -228,7 +250,7 @@ window.renderDetails = function (matchDay) { // show the details of the match
     var del_button = "";
     var edit_button = "";
     if (sessionStorage.getItem("User") == 'admin'){
-      del_button = `<button class="delmatchbutton" id="match${match_num}" onClick="delMatch('${searchKey}', ${match_num})"><i class="material-icons" style="font-size:16px">delete</i></button>`
+      del_button = `<button class="delmatchbutton" onClick="delMatch('${searchKey}', ${match_num})"><i class="material-icons" style="font-size:16px">delete</i></button>`
       edit_button = `<button class="editmatchinfobutton" onClick="editMatchInfo('${searchKey}', ${match_num})"><i class="fa fa-pencil" style="font-size:16px"></i></button>`
     }
     if (objLength(writeParse) == 0) {
@@ -301,7 +323,6 @@ function objLength(obj) {
 function get_player_matches(matches){
   document.getElementsByClassName("userMatchDetails")[0].innerHTML = "";
   var email = sessionStorage.getItem("User");
-  // var team = sessionStorage.getItem("Team");
   var user_matches = [];
   for (var i = 0; i < objLength(matches); i++){
     var matches_on_day = matches[Object.keys(matches)[i]];
@@ -314,7 +335,6 @@ function get_player_matches(matches){
   }
 
   document.querySelector(".userMatches").innerHTML = `<h2>User ${email}'s Applied Matches</h2>`;
-
   // To make the collapsing buttons info
   for (var l = 0; l < objLength(user_matches); l++){
      var match = user_matches[l];
@@ -334,7 +354,7 @@ function get_player_matches(matches){
      document.getElementsByClassName("userMatchDetails")[0].appendChild(new_button);
   }
   sessionStorage.setItem("UserMatches", JSON.stringify(user_matches));
-
+  get_match_info(read_data[0]);
 }
 
 function get_match_info(match_info) {
@@ -371,7 +391,6 @@ function get_match_info(match_info) {
   }
   // To make the collapsing buttons actually collapse and close
   var coll = document.getElementsByClassName("collapsible");
-
   for (var i = 0; i < coll.length; i++) {
     coll[i].addEventListener("click", function() {
       this.classList.toggle("active");
@@ -451,4 +470,57 @@ editForm.addEventListener('submit', event => {
   });
 
   clearForm(); // close and clear the form after submission successful 
+});
+
+window.delTeam = function (db_key, team_num) {
+  if (Object.keys(write_data[0][db_key]) != null){
+    var team_key = Object.keys(write_data[0][db_key])[team_num - 1];
+    if (confirm("Are you sure you want to delete this team?")){
+      remove(ref(database, 'posts/write/' + db_key + '/' + team_key));
+    }
+  }
+}
+
+var editing_team_key = "";
+var editing_match_num = "";
+
+window.editTeamInfo = function (db_key, team_num) {
+  document.getElementById("editTeamForm").style.display = "block";
+  editing_team_key = db_key;
+  editing_match_num = team_num;
+  document.getElementById("myForm").style.display = "none";
+  document.getElementById("inputEmail1").value = sessionStorage.getItem("User");
+  var cases_select = document.getElementById("all_cases1");
+  cases_select.innerHTML = "";
+  for (var i = 0; i < objLength(cases_data[0]); i++){
+    var key = Object.keys(cases_data[0])[i];
+    var the_case = cases_data[0][key]['Case'];
+    var new_opt = document.createElement("option");
+    new_opt.value = the_case;
+    new_opt.text = the_case;
+    cases_select.add(new_opt, null);
+  }
+}
+
+var editTeamForm = document.getElementById("submiteditTeamForm");
+
+editTeamForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const formData = new FormData(editTeamForm);
+  const data = Object.fromEntries(formData); // generate the data from the form
+  let parseData = "";
+  parseData = write_data[0][editing_team_key]; // point to the day clicked
+  var team_key = Object.keys(write_data[0][editing_team_key])[editing_match_num - 1]; 
+  if (data['case'] == '') {
+    data['case'] = write_data[0][editing_team_key][team_key]['case'];
+  }
+  if (data['team'] == '') {
+    data['team'] = write_data[0][editing_team_key][team_key]['team'];
+  }
+  update(ref(database, 'posts/write/' + editing_team_key), {
+    [team_key]: data
+  });
+
+  document.getElementById("myForm").style.display = "block";
+  clearEditForm(); // close and clear the form after submission successful 
 });
