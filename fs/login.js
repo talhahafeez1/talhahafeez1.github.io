@@ -7,12 +7,13 @@ window.loginUser = function (){
         .then(res => res.json())
         .then(async data => {
             let databaseUserInfo = data["users"][encoded_username]; // point to the day clicked
-            let saved_data = databaseUserInfo[Object.keys(databaseUserInfo)[0]];
             // Check if user exists
             if (databaseUserInfo == null){
                 alert("User does not exist!");
                 return;
-            } 
+            }
+
+            let saved_data = databaseUserInfo[Object.keys(databaseUserInfo)[0]];
             
             // Check if password matches database saved password
             if (saved_data['pass'] != password){
