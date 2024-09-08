@@ -3,16 +3,16 @@ function login() {
 }
 
 function createUser() {
-    let username = document.getElementById("inputregisterUser").value;
-    let password = document.getElementById("inputregisterPassword").value;
-    let team = document.getElementById("inputregisterTeam").value;
-
+    var username = document.getElementById("inputregisterUser").value;
+    var password = document.getElementById("inputregisterPassword").value;
+    var team = document.getElementById("inputregisterTeam").value;
+    var encoded_username = encodeKey(username);
     fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
         .then(res => res.json())
         .then(async readData => {
         parseData = readData["users"]; // point to the day clicked
 
-        if (parseData[username] != null) {
+        if (parseData[encodeKey(encoded_username)] != null) {
             alert("Another user with the email entered already exists!");
             return;
         }
@@ -25,7 +25,7 @@ function createUser() {
             }
         }
 
-        await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/users/' + username + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
+        await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/users/' + encodeKey(encoded_username) + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -45,4 +45,8 @@ function objLength(obj) {
     }
   
     return count;
+}
+
+function encodeKey(s) {
+    return encodeURIComponent(s).replace(/\./g, '%2E');
 }

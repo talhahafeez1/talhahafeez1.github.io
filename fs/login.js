@@ -1,11 +1,12 @@
 window.loginUser = function (){
     var username = document.getElementById("inputUser").value;
     var password = document.getElementById("inputPassword").value;
+    var encoded_username = encodeKey(username);
     if (username != ""){
         fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
         .then(res => res.json())
         .then(async data => {
-            let databaseUserInfo = data["users"][username]; // point to the day clicked
+            let databaseUserInfo = data["users"][encoded_username]; // point to the day clicked
             let saved_data = databaseUserInfo[Object.keys(databaseUserInfo)[0]];
             // Check if user exists
             if (databaseUserInfo == null){
@@ -25,6 +26,7 @@ window.loginUser = function (){
             if (saved_data['admin']){
                 sessionStorage.setItem("col", "red");
             }
+
             sessionStorage.setItem("User", username);
             sessionStorage.setItem("Team", saved_data['team']);
             sessionStorage.setItem("loggedIn", "True");
@@ -35,4 +37,8 @@ window.loginUser = function (){
   
 window.createAcc = function () {
     window.location.href = "./register.html";
+}
+
+function encodeKey(s) {
+    return encodeURIComponent(s).replace(/\./g, '%2E');
 }
