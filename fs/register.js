@@ -10,9 +10,9 @@ function createUser() {
     fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
         .then(res => res.json())
         .then(async readData => {
-        parseData = readData["users"]; // point to the day clicked
+        parseData = readData["users"]; // point to the user data 
 
-        if (parseData[encodeKey(encoded_username)] != null) {
+        if (parseData[encodeKey(username)] != null) {
             alert("Another user with the email entered already exists!");
             return;
         }
@@ -25,7 +25,7 @@ function createUser() {
             }
         }
 
-        await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/users/' + encodeKey(encoded_username) + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
+        await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/users/' + encoded_username + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

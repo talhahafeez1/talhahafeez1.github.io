@@ -44,6 +44,8 @@ onValue(write, (snapshot) => {
 
   get_player_matches(snapshot.val());
   
+
+  // email function (48 hr change)
   onValue(saved_day, (snapshot1) => {
     var today_day = new Date().getDate();
     var today_month = new Date().getMonth();
