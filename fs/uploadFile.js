@@ -35,6 +35,12 @@ onValue(write, (snapshot) => {
   write_data[0] = snapshot.val();
 });
 
+const accounts = ref(database, 'posts/users');
+var accountData = [[]];
+onValue(accounts, (snapshot) => {
+  accountData[0] = snapshot.val();
+});
+
 var months = {"January": "01", "February": "02", "March": "03", "April": "04", "May": "05", "June": "06", 
               "July": "07", "August": "08", "September": "09", "October": "10", "November": "11", 
               "December": "12"
@@ -43,6 +49,8 @@ var months = {"January": "01", "February": "02", "March": "03", "April": "04", "
 function uploadFile () {}
 
 function uploadcaseFile () {}
+
+function uploadAccountFile () {}
 
 uploadcaseFile.prototype.getCsv = function(e) {
     var input = document.getElementById("caseFile");
@@ -85,8 +93,30 @@ uploadFile.prototype.getCsv = function(e) {
         }
     });
 }
+
+uploadAccountFile.prototype.getCsv = function(e) {
+    var input = document.getElementById("accountFile");
+    var file;
+    input.addEventListener('change', function () {
+        file = this.files;
+    });
+
+    let submitBtn = document.getElementById('uploadAccountFile');
+    submitBtn.addEventListener('click', function() {
+        if (file && file[0]) {
+            var myFile = file[0];
+            var reader = new FileReader();
+            reader.addEventListener('load', function (e) {
+                let csvdata = e.target.result;
+                parseCsv2.getParsecsvdata(csvdata);
+            });
+            reader.readAsBinaryString(myFile);
+        }
+    });
+}
+
 uploadFile.prototype.getParsecsvdata = function (data) {
-let parsedData = data.split('\n');
+    let parsedData = data.split('\n');
     uploadData(parsedData);
 }
 
@@ -95,11 +125,21 @@ uploadcaseFile.prototype.getParsecsvdata = function (data) {
     uploadCases(parsedData);
 }
 
+uploadAccountFile.prototype.getParsecsvdata = function (data) {
+    let parsedData = data.split('\n');
+    uploadAccounts(parsedData);
+}
+
 var parseCsv = new uploadFile();
 parseCsv.getCsv();
 
 var parseCsv1 = new uploadcaseFile();
 parseCsv1.getCsv();
+
+var parseCsv2 = new uploadAccountFile();
+parseCsv2.getCsv();
+
+
 
 window.uploadCases = function (data) {
     remove(ref(database, 'posts/cases'));
@@ -116,9 +156,30 @@ window.uploadCases = function (data) {
             });
         }
     });
+    alert("Files Uploaded Successfully");
+
 }
 
+// email,password,teamName
+
+window.uploadAccounts = function (data) {
+    var accountInfo = data;
+    console.log(accountInfo);
+    for (var i = 0; i < objLength(accountInfo); i++){
+        if (accountInfo[i] != "" && accountInfo[i] != " " && accountInfo[i] != "\r") {
+            var parsedAccount = accountInfo[i].split(/,/);
+            var username = parsedAccount[0];
+            var password = parsedAccount[1];
+            var team = parsedAccount[2];
+            createUser(username, password, team);
+        }
+    }
+    alert("Files Uploaded Successfully");
+}
+
+
 window.uploadData = function (data) {
+    
     var all_matches = data;
     // var all_matches = document.getElementById("uploadfileInfo").value;
     for (var i = 0; i < objLength(all_matches); i++){
@@ -145,6 +206,7 @@ window.uploadData = function (data) {
         var database_key = "" + months[date[0]] + date[1];
         addMatch(database_key, match_info);
     }
+    alert("Files Uploaded Successfully");
 }
 
 function addMatch(database_key, match_info){
@@ -197,3 +259,40 @@ function objLength(obj) {
   
     return count;
   }
+
+function createUser(username, password, team) {
+    var encoded_username = encodeKey(username);
+    fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts.json?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA')
+        .then(res => res.json())
+        .then(async readData => {
+        let parseData = readData["users"]; // point to the user data 
+
+        if (parseData[encodeKey(username)] != null) {
+            alert("Another user with the email entered already exists!");
+            return;
+        }
+        /*
+        for (let i = 0; i < objLength(parseData); i++){
+            let user = parseData[Object.keys(parseData)[i]];
+            let value = user[Object.keys(user)[0]];
+            if (value["team"] == team){
+                alert("Another user with the team entered already exists");
+                return;
+            }
+        }
+        */
+        
+        await fetch('https://oebcalendar-c34e0-default-rtdb.firebaseio.com/posts/users/' + encoded_username + '.json/?AIzaSyBKQ7SbuDkeqsN8d22tAC_a52kpwaKSJVA', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"pass": password, "team": team, "admin": false}) // actual content being written to db from form submission
+        });
+    });
+}
+
+function encodeKey(s) {
+    let firstEncode = encodeURIComponent(s).replace(/\./g, '%2E');
+    return encodeURIComponent(firstEncode).replace(/\./g, '%2E');
+}
