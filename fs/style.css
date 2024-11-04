@@ -29,6 +29,9 @@ html {
   justify-content: center;
   align-items: center;
 }
+.banner {
+  background-color: #12121f;
+}
 
 .calendar {
   width: 45rem;
@@ -582,4 +585,8 @@ input[type="file"]::file-selector-button:active {
 .editmatchinfobutton {
   width: 22px;
   right: 34px;
+}
+
+img { 
+  width: 250px;
 }
