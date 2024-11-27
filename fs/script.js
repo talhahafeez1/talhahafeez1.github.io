@@ -208,7 +208,6 @@ window.openForm = function (finalClick) {
   }
 
 }
-
 // close form 
 window.clearForm = function () {
   document.getElementById("myForm").style.display = "none"; // hide pop up form
@@ -267,7 +266,22 @@ window.renderDetails = function (matchDay) { // show the details of the match
     match += `<button type="button" class="block" onClick="openAddMatchForm()">Add Match</button>`;
   }
 
+  let today = new Date();
+  let dateDiff = matchDay - today.getDate()
+
+  matchFreeze(dateDiff);
+
   matchDetails.innerHTML = match;
+}
+
+function matchFreeze(dateDiff) {
+  if (dateDiff < 0) {
+    //let 
+  } else if (dateDiff <= 2) {
+    document.getElementById("submit").style.display = "none"; // hide
+  } else {
+    document.getElementById("submit").style.display = "block"; // else return to normal view
+  }
 }
 
 // event listener to write form submissions to db
