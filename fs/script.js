@@ -265,19 +265,21 @@ window.renderDetails = function (matchDay) { // show the details of the match
   if (objLength(parseData) < 3 && sessionStorage.getItem("User") == "admin"){
     match += `<button type="button" class="block" onClick="openAddMatchForm()">Add Match</button>`;
   }
-
-  let today = new Date();
-  let dateDiff = matchDay - today.getDate()
-
-  matchFreeze(dateDiff);
+  matchFreeze(matchDay);
 
   matchDetails.innerHTML = match;
 }
 
-function matchFreeze(dateDiff) {
-  if (dateDiff < 0) {
-    //let 
-  } else if (dateDiff <= 2) {
+function matchFreeze(matchDay) {
+  let clickedDate = new Date(date.getFullYear(), date.getMonth(), matchDay); //normalize time to midnight 
+  clickedDate.setDate(matchDay);
+  let tempDate = new Date();
+  let today = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate()); //normalize time to midnight
+  
+  let dateDiffMS = clickedDate - today // difference in ms 
+  const diffInDays = dateDiffMS / (1000 * 60 * 60 * 24); 
+  
+  if (diffInDays <= 2) {
     document.getElementById("submit").style.display = "none"; // hide
   } else {
     document.getElementById("submit").style.display = "block"; // else return to normal view
