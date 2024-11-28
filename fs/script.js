@@ -208,7 +208,6 @@ window.openForm = function (finalClick) {
   }
 
 }
-
 // close form 
 window.clearForm = function () {
   document.getElementById("myForm").style.display = "none"; // hide pop up form
@@ -266,8 +265,25 @@ window.renderDetails = function (matchDay) { // show the details of the match
   if (objLength(parseData) < 3 && sessionStorage.getItem("User") == "admin"){
     match += `<button type="button" class="block" onClick="openAddMatchForm()">Add Match</button>`;
   }
+  matchFreeze(matchDay);
 
   matchDetails.innerHTML = match;
+}
+
+function matchFreeze(matchDay) {
+  let clickedDate = new Date(date.getFullYear(), date.getMonth(), matchDay); //normalize time to midnight 
+  clickedDate.setDate(matchDay);
+  let tempDate = new Date();
+  let today = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate()); //normalize time to midnight
+  
+  let dateDiffMS = clickedDate - today // difference in ms 
+  const diffInDays = dateDiffMS / (1000 * 60 * 60 * 24); 
+  
+  if (diffInDays <= 2) {
+    document.getElementById("submit").style.display = "none"; // hide
+  } else {
+    document.getElementById("submit").style.display = "block"; // else return to normal view
+  }
 }
 
 // event listener to write form submissions to db
