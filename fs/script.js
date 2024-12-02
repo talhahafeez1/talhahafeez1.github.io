@@ -255,11 +255,11 @@ window.renderDetails = function (matchDay) { // show the details of the match
       edit_button = `<button class="editmatchinfobutton" onClick="editMatchInfo('${searchKey}', ${match_num})"><i class="fa fa-pencil" style="font-size:16px"></i></button>`
     }
     if (objLength(writeParse) == 0) {
-      match += `<div class="matchDiv"><p class="option1" onclick="openForm(this.id)" id="${match_num}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>` + del_button + edit_button + `</div>`
+      match += `<div class="matchDiv"><p class="option1" onclick="openForm(this.id)" id="${match_num}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Evaluator:</b> ${moderator}</p>` + del_button + edit_button + `</div>`
     } else if (objLength(writeParse) == 1) {
-      match += `<div class="matchDiv"><p class="option2" onclick="openForm(this.id)" id="${match_num}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>` + del_button + edit_button + `</div>`
+      match += `<div class="matchDiv"><p class="option2" onclick="openForm(this.id)" id="${match_num}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Evaluator:</b> ${moderator}</p>` + del_button + edit_button + `</div>`
     } else if (objLength(writeParse) == 2) {
-      match += `<div class="matchDiv"><p class="option3" onclick="openForm(this.id)" id="${match_num}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Moderator:</b> ${moderator}</p>` + del_button + edit_button + `</div>`
+      match += `<div class="matchDiv"><p class="option3" onclick="openForm(this.id)" id="${match_num}"><b>Start Time:</b> ${start} </br> <b>End Time:</b> ${end} </br> <b>Evaluator:</b> ${moderator}</p>` + del_button + edit_button + `</div>`
     }
   }
   if (objLength(parseData) < 3 && sessionStorage.getItem("User") == "admin"){
