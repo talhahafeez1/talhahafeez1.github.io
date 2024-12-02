@@ -397,7 +397,7 @@ function get_match_info(match_info) {
         var moderator = document.createElement('p');
         start_time.innerText = "Start Time: " + match_info[month + day][match_on_day]['start'];
         end_time.innerText = "End Time: " + match_info[month + day][match_on_day]['end'];
-        moderator.innerText = "Moderator: " + match_info[month + day][match_on_day]['moderator'];
+        moderator.innerText = "Evaluator: " + match_info[month + day][match_on_day]['Evaluator'];
         new_div.appendChild(start_time);
         new_div.appendChild(end_time);
         new_div.appendChild(moderator);
@@ -479,8 +479,8 @@ editForm.addEventListener('submit', event => {
   if (data['end'] == '') {
     data['end'] = read_data[0][editing_key][editing_match_num]['end'];  
   }
-  if (data['moderator'] == '') {
-    data['moderator'] = read_data[0][editing_key][editing_match_num]['moderator'];  
+  if (data['Evaluator'] == '') {
+    data['Evaluator'] = read_data[0][editing_key][editing_match_num]['Evaluator'];  
   }
 
   update(ref(database, 'posts/read/' + editing_key), {
