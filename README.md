@@ -16,6 +16,12 @@ Hosting is handled by Github pages.
 The database used is firebase. 
 
 
+A test account exists with the credentials: 
+Username: test
+Password: test
+
+Please do not sign up for any matches during an active season with a test account.
+
 
 The first draft of this project can be found at: 
 https://github.com/jingg-t/oebCalendar
