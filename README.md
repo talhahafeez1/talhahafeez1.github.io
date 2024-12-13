@@ -1,4 +1,4 @@
-###Purpose
+### Purpose
 This is a full stack web application built for the Canadian Ethics Bowl organization.
 
 Ethics Bowl Canada is a recognized non profit organization that coordinates a nation wide high school 
@@ -10,7 +10,7 @@ have a friendly match with another team and familize themselves with the match s
 
 If you are interested in learning more, please visit our website at: https://ethicsbowl.ca/ 
 
-###Tools 
+### Tools 
 The front end is built with html/css and vanilla javascript.
 Hosting is handled by Github pages. 
 The database used is firebase. 
